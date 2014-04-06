@@ -8,7 +8,7 @@ import java.sql.Time
 import org.scalatest.GivenWhenThen
 import ar.edu.unq.desapp._
 
-class UsersLibraryTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
+class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
 
   def fixture = new {
     val librarySystem = new LibrarySystem()
