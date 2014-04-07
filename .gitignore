@@ -11,3 +11,32 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+
+# Eclipse
+.project
+.settings
+
+GrupoC-Model/.cache
+GrupoC-Model/.classpath
+GrupoC-Model/.project
+GrupoC-Model/.settings
+GrupoC-Model/target
+
+GrupoC-Persistence/.cache
+GrupoC-Persistence/.classpath
+GrupoC-Persistence/.project
+GrupoC-Persistence/.settings
+GrupoC-Persistence/target
+
+GrupoC-Presentation/.cache
+GrupoC-Presentation/.classpath
+GrupoC-Presentation/.project
+GrupoC-Presentation/.settings
+GrupoC-PresentationModel/target
+
+GrupoC-Service/.cache
+GrupoC-Service/.classpath
+GrupoC-Service/.project
+GrupoC-Service/.settings
+GrupoC-Service/target
+

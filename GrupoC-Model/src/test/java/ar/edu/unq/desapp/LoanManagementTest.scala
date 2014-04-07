@@ -1,12 +1,9 @@
 package ar.edu.unq.desapp
 
-import org.scalatest.mock.MockitoSugar
 import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
-import java.util.Date
-import java.sql.Time
 import org.scalatest.GivenWhenThen
-import ar.edu.unq.desapp._
+import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.mock.MockitoSugar
 
 class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
 
@@ -14,10 +11,11 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
     val loanManagement = new LoanManagement()
     val userA = new Client("userA", "userA@library.com", "568321")
     val userB = new Client("userB", "userB@library.com", "as9uj")
+    val mockBook = mock[Book]
   }
 
   describe("Loan Management") {
-    it("should record loans in case that the books is available") {
+    it("should record borrows in case that the books is available") {
       val loanManagement = fixture.loanManagement
     		  
       val userA = fixture.userA
@@ -25,9 +23,9 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       
       given("following users and books")
 
-      val bookA = mock(Book)
-      val bookB = mock(Book)
-      val bookC = mock(Book)
+      val bookA = fixture.mockBook
+      val bookB = fixture.mockBook
+      val bookC = fixture.mockBook
 
       when("each user requests a book")
       loanManagement.recordLoan(userA, bookA)
@@ -49,9 +47,9 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       given("following 2 users, 3 busy book and maximum allowable reserve")
       val userA = fixture.userA
       val userB = fixture.userB
-      val busyBookA = mock(Book)
-      val busyBookB = mock(Book)
-      val busyBookC = mock(Book)
+      val busyBookA = fixture.mockBook
+      val busyBookB = fixture.mockBook
+      val busyBookC = fixture.mockBook
 
       when("user reserve the book")
       loanManagement.reserveBook(userA, busyBookA)
@@ -73,7 +71,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       val userA = fixture.userA
       val userB = fixture.userB
 
-      val busyBook = mock(Book)
+      val busyBook = fixture.mockBook
 
       when("users want to sign up to notification list")
       loanManagement.signUpNotification(userA, busyBook)
