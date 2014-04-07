@@ -4,6 +4,7 @@ import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
+import java.awt.Image
 
 class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
 
@@ -32,30 +33,29 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
       val editorialB = "What's up?"
       val imageB = mock[Image]
       val descriptionB = "Yes, i haven't more imagination"
-      val authorsB = mock[Author] ::List() ::: authorsA
+      val authorsB = mock[Author] :: authorsA
 
       when("the librarian add the books to system")
-      librarian addBookToSystem(titleA, isbnA, editorialA, imageA, descriptionA, authorsA)
-      librarian addBookToSystem(titleA, isbnA, editorialA, imageA, descriptionA, authorsA)
+      librarian addBookToSystem(titleA, isbnA, editorialA, imageA, descriptionA, authorsA, 4)
       librarian addBookToSystem(titleB, isbnB, editorialB, imageB, descriptionB, authorsB)
 
       then("the books should be inside to system")
-      val booksToSystem : List[(Book, Int)] = fixture.librarySystem.books
+      val booksToSystem : List[Book] = fixture.librarySystem.books
 
       booksToSystem should have size (2)
-      booksToSystem(0)._1 should have('title("Title"))
-      booksToSystem(0)._1 should have('isbn("123-749"))
-      booksToSystem(0)._1 should have('editorial("Something"))
-      booksToSystem(0)._1 should have('description("Just to test it"))
-      booksToSystem(0)._1 should have('authors(authorsA))
-      booksToSystem(0)._2 should be (2)
+      booksToSystem(0) should have('title("Title"))
+      booksToSystem(0) should have('isbn("123-749"))
+      booksToSystem(0) should have('editorial("Something"))
+      booksToSystem(0) should have('description("Just to test it"))
+      booksToSystem(0) should have('authors(authorsA))
+      booksToSystem(0).amount should be (4)
 
-      booksToSystem(1)._1 should have('title("The True"))
-      booksToSystem(1)._1 should have('isbn("987-789"))
-      booksToSystem(1)._1 should have('editorial("What's up?"))
-      booksToSystem(1)._1 should have('description("Yes, i haven't more imagination"))
-      booksToSystem(1)._1 should have('authors(authorsB))
-      booksToSystem(1)._2 should be (1)
+      booksToSystem(1) should have('title("The True"))
+      booksToSystem(1) should have('isbn("987-789"))
+      booksToSystem(1) should have('editorial("What's up?"))
+      booksToSystem(1) should have('description("Yes, i haven't more imagination"))
+      booksToSystem(1) should have('authors(authorsB))
+      booksToSystem(1).amount should be (1)
 
     }
 
@@ -66,13 +66,13 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
       librarian addBookToSystem("FullMoon", "156-5746", "Sonata Artica", mock[Image], "i was listened Sonata Artica", mock[Author]::List())
 
       when("will go to modify a book")
-      val bookToModify = fixture.librarySystem.books(0)._1
+      val bookToModify = fixture.librarySystem.books(0)
       val bookModified = new Book("Rhythmbox", "156-5746", "Sonata Artica", mock[Image], "yes, i was bored", mock[Author]::List())
 
       librarian.modifyBookFromTheSystem(bookToModify, bookModified)
 
       then("must have the modified book")
-      val book = fixture.librarySystem.books(0)._1
+      val book = fixture.librarySystem.books(0)
 
       book should have('title("Rhythmbox"))
       book should have('isbn("156-5746"))
@@ -84,8 +84,8 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
     it("should delete a book") {
       val librarian = fixture.librarian
       
-      val authorMobyDick = new Author("Herman Melville", mock[Book]::List())
-      val authorAAPA = new Author("Julio Cortazar", mock[Book]::List())
+      val authorMobyDick = new Author("Herman Melville")
+      val authorAAPA = new Author("Julio Cortazar")
 
       given("following books")
       librarian addBookToSystem("FullMoon", "156-5746", "Sonata Artica", mock[Image], "i know that it's not book", mock[Author]::List())
@@ -93,15 +93,15 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
       librarian addBookToSystem ("Moby Dick", "156-5746", "Some Editorial", mock[Image], "cuento", authorMobyDick :: List())
 
       when("you want delete a book")
-      val bookToRemove = fixture.librarySystem.books(0)._1
+      val bookToRemove = fixture.librarySystem.books(0)
       librarian deleteBookFromTheSystem(bookToRemove)
 
       then("should have the books")
       val books = fixture.librarySystem.books
 
       books should have size (2)
-      books(0)._1 should have('title("Alguien anda por ahi"))
-      books(1)._1 should have('title("Moby Dick"))
+      books(0) should have('title("Alguien anda por ahi"))
+      books(1) should have('title("Moby Dick"))
     }
 
     ignore("configure amount to allow loan") {

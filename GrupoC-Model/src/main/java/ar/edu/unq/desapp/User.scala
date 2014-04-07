@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp
 
-class User(username: String, email: String, password: String) {
+class User(val username: String, val email: String, val password: String) {
 
   var amountAllowLoan: Int = 3
   var borrowedBooks: List[Book] = List()
@@ -9,5 +9,5 @@ class User(username: String, email: String, password: String) {
 
   def returnBook(aBook: Book): Unit = borrowedBooks filter (book => book.equals(aBook))
 
-  def commentBook(aBook: Book, aComment: String) {}
+  def commentBook(aBook: Book, aComment: String) = {}
 }

@@ -1,14 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ar.edu.unq.tpi.desapp</groupId>
 	<artifactId>GrupoC-parent</artifactId>
-	<version>0.1-SNAPSHOT</version>
 	<inceptionYear>2014</inceptionYear>
 	<packaging>pom</packaging>
 	<name>GrupoC-parent</name>
-	<url>http://maven.apache.org</url>
 
 	<modules>
 		<module>GrupoC-Presentation</module>
@@ -27,12 +25,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<artifactId>aunq-parent</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jetty.version>6.1.16</jetty.version> 
-		<wicket.version>1.5.0</wicket.version> 
-		<spring.version>3.0.5.RELEASE</spring.version> 
-		<cglib.version>2.1_3</cglib.version> 
-	</properties> 
+		<jetty.version>6.1.16</jetty.version>
+		<wicket.version>1.5.0</wicket.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
+		<cglib.version>2.1_3</cglib.version>
+	</properties>
 
- </project>
+</project>

@@ -4,11 +4,12 @@ import org.scalatest.FunSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.GivenWhenThen
 import org.scalatest.mock.MockitoSugar
+import java.awt.Image
 
 class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
   
   def fixture = new {
-    val nf = new NotificationSystem()
+    val notificationSystem = new NotificationSystem()
     val emailService = mock[EmailService]
     val mockImage = mock[Image]
     val userA = new Client("userA", "userA@gmail.com", "124121")
@@ -20,7 +21,7 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
   
   describe("Notification System"){
     it("must register notifications to the users"){
-      val notificationSystem = fixture.nf
+      val notificationSystem = fixture.notificationSystem
       
       given("following users and two books")
       val clientA = fixture.userA
@@ -36,7 +37,7 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
       notificationSystem.addObserver(clientC, aBorrowedBookB)
       
       then("should have added")
-      val notifications = notificationSystem.userNotificationsForBorrowedBooks
+      val notifications = notificationSystem.users
       
       notifications should have size(2)
       notifications should (contain key(aBorrowedBookA) and contain value(List(clientA, clientB)))
@@ -44,7 +45,7 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
     }
     
     it("must notify to all users that await your wished book"){
-      val notificationSystem = fixture.nf
+      val notificationSystem = fixture.notificationSystem
       val mailer = fixture.emailService
       val clientA = fixture.userA
       val clientB = fixture.userC
@@ -63,11 +64,11 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
 //      verify(mailer).sendNotification(clientB, aBorrowedBook)
       
       and("delete notifications")
-      notificationSystem.userNotificationsForBorrowedBooks should not contain key(aBorrowedBook)
+      notificationSystem.users should not contain key(aBorrowedBook)
     }
     
-    it("dashboard"){
-      val notificationSystem = fixture.nf
+    ignore("dashboard"){
+      val notificationSystem = fixture.notificationSystem
       
     }
   }
