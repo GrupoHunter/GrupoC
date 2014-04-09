@@ -1,5 +1,3 @@
 package ar.edu.unq.desapp
 
-class EmailService {
-
-}
+class EmailService

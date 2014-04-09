@@ -9,18 +9,18 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
 
   def fixture = new {
     val loanManagement = new LoanManagement()
-    val userA = new Client("userA", "userA@library.com", "568321")
-    val userB = new Client("userB", "userB@library.com", "as9uj")
+    val userA = new User("userA", "userA@library.com", "568321")
+    val userB = new User("userB", "userB@library.com", "as9uj")
     val mockBook = mock[Book]
   }
 
   describe("Loan Management") {
     ignore("should record borrows in case that the books is available") {
       val loanManagement = fixture.loanManagement
-    		  
+
       val userA = fixture.userA
       val userB = fixture.userB
-      
+
       given("following users and books")
 
       val bookA = fixture.mockBook
@@ -60,8 +60,8 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
 
       then("Loan Management should save reserve of users")
       loanManagement.reservedBooks should have size (2)
-      loanManagement.reservedBooks should (contain key(userA.email) and contain value (List(busyBookA, busyBookB)))
-      loanManagement.reservedBooks should (contain key(userB.email) and contain value (List(busyBookC)))
+      loanManagement.reservedBooks should (contain key (userA.email) and contain value (List(busyBookA, busyBookB)))
+      loanManagement.reservedBooks should (contain key (userB.email) and contain value (List(busyBookC)))
     }
 
     ignore("should sign up the users to notification list") {
@@ -78,13 +78,13 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       loanManagement.signUpNotification(userB, busyBook)
 
       then("you get loaded the users")
-//      loanManagement.usersToNotification should have size (1)
-//      loanManagement.usersToNotification should (key(busyBook) and contain value (userA :: userB :: List()))
+      //      loanManagement.usersToNotification should have size (1)
+      //      loanManagement.usersToNotification should (key(busyBook) and contain value (userA :: userB :: List()))
     }
-    
-    ignore("handle the notifications of available books"){
+
+    ignore("handle the notifications of available books") {
       val loanManagement = fixture.loanManagement
-      
+
     }
   }
 }

@@ -32,6 +32,18 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.scalastyle</groupId>
+			<artifactId>scalastyle_2.10</artifactId>
+			<version>0.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scalastyle</groupId>
+			<artifactId>scalastyle-maven-plugin</artifactId>
+			<version>0.4.0</version>
+		</dependency>
+
 		<!-- <dependency> <groupId>org.scalamock</groupId> <artifactId>scalamock-specs2-support_2.10</artifactId> 
 			<version>3.0.1</version> <scope>test</scope> </dependency> -->
 
@@ -43,6 +55,12 @@
 		</dependency>
 
 		<!-- /SCALA -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -97,6 +115,29 @@
 						</configuration>
 						<goals>
 							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.scalastyle</groupId>
+				<artifactId>scalastyle-maven-plugin</artifactId>
+				<version>0.4.0</version>
+				<configuration>
+					<verbose>false</verbose>
+					<failOnViolation>true</failOnViolation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<failOnWarning>false</failOnWarning>
+					<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+					<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+					<configLocation>${basedir}/lib/scalastyle_config.xml</configLocation>
+					<outputFile>${project.basedir}/scalastyle-output.xml</outputFile>
+					<outputEncoding>UTF-8</outputEncoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>

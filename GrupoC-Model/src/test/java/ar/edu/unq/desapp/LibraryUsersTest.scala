@@ -11,97 +11,114 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
   def fixture = new {
     val librarySystem = new LibrarySystem()
     val librarian = new Librarian("librarian", "libr@rian.com", "1234", librarySystem)
-    val client = new Client("userName", "client@librarian.com", "4651321")
+    val client = new User("userName", "client@librarian.com", "4651321")
     val loanManagement = new LoanManagement()
+
+    //BookA
+    val titleA = "Title"
+    val isbnA = "123-749"
+    val editorialA = "Something"
+    val imageA = mock[Image]
+    val descriptionA = "Just to test it"
+    val authorsA = mock[Author] :: List()
+    val amountA = 3
+    val bookA = new Book(titleA, isbnA, editorialA, imageA, descriptionA, authorsA, amountA)
+    //BookB
+    val titleB = "The True"
+    val isbnB = "987-789"
+    val editorialB = "What's up?"
+    val imageB = mock[Image]
+    val descriptionB = "Yes, i haven't more imagination"
+    val authorsB = mock[Author] :: authorsA
+    val bookB = new Book(titleB, isbnB, editorialB, imageB, descriptionB, authorsB)
+    //BookC
+    val titleC = "FullMoon"
+    val isbnC = "156-5746"
+    val editorialC = "Sonata Artica"
+    val imageC = mock[Image]
+    val descriptionC = "i was listened Sonata Artica"
+    val authorsC = mock[Author] :: List()
+    val bookC = new Book(titleC, isbnC, editorialC, imageC, descriptionC, authorsC)
   }
 
   describe("Librarian") {
     it("should add books to the system") {
       val librarian = fixture.librarian
+      val system = fixture.librarySystem
 
       given("following two books")
-
-      val titleA = "Title"
-      val isbnA = "123-749"
-      val editorialA = "Something"
-      val imageA = mock[Image]
-      val descriptionA = "Just to test it"
-      val authorsA = mock[Author] :: List()
-
-      val titleB = "The True"
-      val isbnB = "987-789"
-      val editorialB = "What's up?"
-      val imageB = mock[Image]
-      val descriptionB = "Yes, i haven't more imagination"
-      val authorsB = mock[Author] :: authorsA
+      val bookA = fixture.bookA
+      val bookB = fixture.bookB
 
       when("the librarian add the books to system")
-      librarian addBookToSystem(titleA, isbnA, editorialA, imageA, descriptionA, authorsA, 4)
-      librarian addBookToSystem(titleB, isbnB, editorialB, imageB, descriptionB, authorsB)
+      librarian addBookToSystem (bookA)
+      librarian addBookToSystem (bookB)
 
       then("the books should be inside to system")
-      val booksToSystem : List[Book] = fixture.librarySystem.books
+      val booksToSystem: List[Book] = system.books
 
       booksToSystem should have size (2)
-      booksToSystem(0) should have('title("Title"))
-      booksToSystem(0) should have('isbn("123-749"))
-      booksToSystem(0) should have('editorial("Something"))
-      booksToSystem(0) should have('description("Just to test it"))
-      booksToSystem(0) should have('authors(authorsA))
-      booksToSystem(0).amount should be (4)
+      booksToSystem(0) should have('title(bookA.title))
+      booksToSystem(0) should have('isbn(bookA.isbn))
+      booksToSystem(0) should have('editorial(bookA.editorial))
+      booksToSystem(0) should have('description(bookA.description))
+      booksToSystem(0) should have('authors(bookA.authors))
+      booksToSystem(0).amount should be(3)
 
-      booksToSystem(1) should have('title("The True"))
-      booksToSystem(1) should have('isbn("987-789"))
-      booksToSystem(1) should have('editorial("What's up?"))
-      booksToSystem(1) should have('description("Yes, i haven't more imagination"))
-      booksToSystem(1) should have('authors(authorsB))
-      booksToSystem(1).amount should be (1)
+      booksToSystem(1) should have('title(bookB.title))
+      booksToSystem(1) should have('isbn(bookB.isbn))
+      booksToSystem(1) should have('editorial(bookB.editorial))
+      booksToSystem(1) should have('description(bookB.description))
+      booksToSystem(1) should have('authors(bookB.authors))
+      booksToSystem(1).amount should be(1)
 
     }
 
     it("should modify a book to the system") {
       val librarian = fixture.librarian
+      val system = fixture.librarySystem
 
       given("that the system has added one book")
-      librarian addBookToSystem("FullMoon", "156-5746", "Sonata Artica", mock[Image], "i was listened Sonata Artica", mock[Author]::List())
+      val bookA = fixture.bookA
+      librarian addBookToSystem (bookA)
 
       when("will go to modify a book")
       val bookToModify = fixture.librarySystem.books(0)
-      val bookModified = new Book("Rhythmbox", "156-5746", "Sonata Artica", mock[Image], "yes, i was bored", mock[Author]::List())
+      val bookModified = fixture.bookC
 
       librarian.modifyBookFromTheSystem(bookToModify, bookModified)
 
       then("must have the modified book")
-      val book = fixture.librarySystem.books(0)
+      val books = system.books(0)
 
-      book should have('title("Rhythmbox"))
-      book should have('isbn("156-5746"))
-      book should have('editorial("Sonata Artica"))
-      book should have('description("yes, i was bored"))
-      
+      books should have('title(bookModified.title))
+      books should have('isbn(bookModified.isbn))
+      books should have('editorial(bookModified.editorial))
+      books should have('description(bookModified.description))
+
     }
 
     it("should delete a book") {
       val librarian = fixture.librarian
-      
-      val authorMobyDick = new Author("Herman Melville")
-      val authorAAPA = new Author("Julio Cortazar")
+      val bookA = fixture.bookA
+      val bookB = fixture.bookB
+      val bookC = fixture.bookC
 
       given("following books")
-      librarian addBookToSystem("FullMoon", "156-5746", "Sonata Artica", mock[Image], "i know that it's not book", mock[Author]::List())
-      librarian addBookToSystem ("Alguien anda por ahi", "1819-7846", "Argentina", mock[Image], "what?, it's a real book", authorAAPA :: List())
-      librarian addBookToSystem ("Moby Dick", "156-5746", "Some Editorial", mock[Image], "cuento", authorMobyDick :: List())
+      librarian addBookToSystem (bookA)
+      librarian addBookToSystem (bookB)
+      librarian addBookToSystem (bookC)
 
       when("you want delete a book")
       val bookToRemove = fixture.librarySystem.books(0)
-      librarian deleteBookFromTheSystem(bookToRemove)
+      librarian deleteBookFromTheSystem (bookToRemove)
 
       then("should have the books")
       val books = fixture.librarySystem.books
 
       books should have size (2)
-      books(0) should have('title("Alguien anda por ahi"))
-      books(1) should have('title("Moby Dick"))
+      books(0) should have('title(bookB.title))
+      books(1) should have('title(bookC.title))
     }
 
     ignore("configure amount to allow loan") {
@@ -122,40 +139,40 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
       val client = fixture.client
 
       given("an available book")
-      val aBookA = new Book("FullMoon", "156-5746", "Sonata Artica", mock[Image], "i know that it's not book", mock[Author] :: List())
-      val aBookB = new Book("Alguien anda por ahi", "1819-7846", "Argentina", mock[Image], "what?, it's a real book", mock[Author] :: List())
+      val bookA = fixture.bookA
+      val bookB = fixture.bookB
 
       when("client wanna borrow a book")
-      client.borrowBook(aBookA)
-      client.borrowBook(aBookB)
+      client.borrowBook(bookA)
+      client.borrowBook(bookB)
 
       then("should have the books")
 
-      client.borrowedBooks should have size(2)
-      client borrowedBooks (0) should have('title("FullMoon"))
-      client borrowedBooks (1) should have('title("Alguien anda por ahi"))
-    }
-    
-    it("should return a book"){
-      val client = fixture.client
-      
-      given("following books that client have loaned")
-      val bookA = new Book("FullMoon", "156-5746", "Sonata Artica", mock[Image], "i know that it's not book", mock[Author] :: List())
-      val bookB = new Book("Alguien anda por ahi", "1819-7846", "Argentina", mock[Image], "what?, it's a real book", mock[Author] :: List())
-      val bookC = new Book("Rhythmbox", "156-5746", "Sonata Artica", mock[Image], "yes, i was bored", mock[Author]::List())
-      val currentBorrowedBooks = bookA :: bookB :: bookC :: List()
-      
-      client.borrowedBooks = currentBorrowedBooks
-      
-      when("client wanna return a book")
-      client.returnBook(bookB)
-      
-      then("must have the books")
       client.borrowedBooks should have size (2)
-      client.borrowedBooks should contain ((bookA :: bookC :: List())) 
+      client borrowedBooks (0) should have('title(bookA.title))
+      client borrowedBooks (1) should have('title(bookB.title))
     }
 
-    ignore("comment a book"){
+    it("should return a book") {
+      val client = fixture.client
+
+      given("following books that client have loaned")
+      val bookA = fixture.bookA
+      val bookB = fixture.bookB
+      val bookC = fixture.bookC
+      val currentBorrowedBooks = bookA :: bookB :: bookC :: List()
+
+      client.borrowedBooks = currentBorrowedBooks
+
+      when("client wanna return a book")
+      client.returnBook(bookB)
+
+      then("must have the books")
+      client.borrowedBooks should have size (2)
+      client.borrowedBooks should contain((bookA :: bookC :: List()))
+    }
+
+    ignore("comment a book") {
       //TODO: implement comment a book
     }
   }
