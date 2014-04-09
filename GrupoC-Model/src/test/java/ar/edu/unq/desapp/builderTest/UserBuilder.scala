@@ -2,41 +2,64 @@ package ar.edu.unq.desapp.builderTest
 
 import ar.edu.unq.desapp._
 
-class UserBuilder {
+
+abstract class UserBuilder extends BuilderToTest[User] {
 
   var name: String = "no name"
-  var password: String = "no pass"
+  var password: String = "no password"
   var email: String = "no email"
   var borrowedBooks: List[Book] = List()
 
-  def anUser: UserBuilder = {
-    new UserBuilder
-  }
+  def withName(aName: String): UserBuilder
 
-  def withName(aName: String): UserBuilder = {
-    name = aName
+  def withPassword(aPassword: String): UserBuilder
+
+  def withEmail(anEmail: String): UserBuilder
+
+  def withBorrowedBooks(books: List[Book]): UserBuilder
+
+}
+
+class UserIdentity extends UserBuilder {
+  
+  override def withName(aName: String): UserBuilder = {
+    this.name = name
     this
   }
 
-  def withPassword(aPassword: String): UserBuilder = {
-    password = aPassword
+  override def withPassword(aPassword: String): UserBuilder = {
+    this.password = aPassword
     this
   }
 
-  def withEmail(anEmail: String): UserBuilder = {
-    email = anEmail
+  override def withEmail(anEmail: String): UserBuilder = {
+    this.email = anEmail
     this
   }
 
-  def withBorrowedBooks(books: List[Book]): UserBuilder = {
-    borrowedBooks = books
+  override def withBorrowedBooks(books: List[Book]): UserBuilder = {
+    this.borrowedBooks = books
+    this
+  }
+
+  override def build: User = {
+    val user = new User(this.name, this.email, this.password)
+    user.borrowedBooks = this.borrowedBooks
+    user
+  }
+}
+
+class LibraryBuilder(var librarySystem: LibrarySystem) extends UserIdentity {
+  
+  def withLibrarySystem(libSystem: LibrarySystem): UserBuilder = {
+    this.librarySystem = libSystem
     this
   }
   
-  def build: User = {
-    val user = new User(name, password, email)
-    user.borrowedBooks = borrowedBooks
-    user
+  override def build: Librarian = {
+    val librarian = new Librarian(this.name, this.email, this.password, this.librarySystem)
+    librarian.borrowedBooks = this.borrowedBooks
+    librarian
   }
-
 }
+

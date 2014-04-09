@@ -4,7 +4,7 @@ import java.awt.Image
 import ar.edu.unq.desapp._
 import java.awt.image.BufferedImage
 
-class BookBuilder {
+class BookBuilder extends BuilderToTest[Book] {
   
 	var title: String = "no title"
 	var isbn : String = "no isbn"
@@ -14,46 +14,42 @@ class BookBuilder {
 	var authors: List[Author] = List()
 	var amount: Int = 0
 	
-	def aBook: BookBuilder = {
-	  new BookBuilder()
-	}
-	
 	def withTitle(aTitle: String): BookBuilder = {
-	  title = aTitle
+	  this.title = aTitle
 	  this
 	}
 	
 	def withIsbn(anIsbn: String): BookBuilder = {
-	  isbn = anIsbn
+	  this.isbn = anIsbn
 	  this
 	}
 	
 	def withEditorial(anEditorial: String): BookBuilder = {
-	  editorial = anEditorial
+	  this.editorial = anEditorial
 	  this
 	}
 	
 	def withImage(anImage: Image): BookBuilder = {
-	  image = anImage
+	  this.image = anImage
 	  this
 	}
 	
 	def withDescription(anDescription: String): BookBuilder = {
-	  description = anDescription
+	  this.description = anDescription
 	  this
 	}
 	
 	def withAmount(n: Int): BookBuilder = {
-	  amount = n
+	  this.amount = n
 	  this
 	}
 	
 	def withAuthors(myAuthors: List[Author]): BookBuilder = {
-	  authors = myAuthors
+	  this.authors = myAuthors
 	  this
 	}
 	
-	def build: Book = {
-	  new Book(title, isbn, editorial, image, description, authors, amount)
+	override def build: Book = {
+	  new Book(this.title, this.isbn, this.editorial, this.image, this.description, this.authors, this.amount)
 	}
 }

@@ -5,8 +5,9 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.GivenWhenThen
 import org.scalatest.mock.MockitoSugar
 import java.awt.Image
+import ar.edu.unq.desapp.builderTest._
 
-class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
+class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder {
 
   def fixture = new {
     val notificationSystem = new NotificationSystem()
@@ -21,15 +22,15 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
 
   describe("Notification System") {
     it("must register notifications to the users") {
-      val notificationSystem = fixture.notificationSystem
+      val notificationSystem = new NotificationSystem()
 
       given("following users and two books")
-      val clientA = fixture.userA
-      val clientB = fixture.userC
-      val clientC = fixture.userB
+      val clientA = anUser.withName("Joseph").withEmail("joseph@email.com").build
+      val clientB = anUser.withName("Pepito").withEmail("pepito1@email.com").build
+      val clientC = aLibrarian.withName("Edurito").withEmail("edurito@email.com").build
 
-      val aBorrowedBookA = fixture.bookA
-      val aBorrowedBookB = fixture.bookB
+      val aBorrowedBookA = aBook.build
+      val aBorrowedBookB = aBook.build
 
       when("add to map")
       notificationSystem.addObserver(clientA, aBorrowedBookA)
@@ -46,7 +47,7 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
 
     it("must notify to all users that await your wished book") {
       val notificationSystem = fixture.notificationSystem
-      val mailer = fixture.emailService
+      val mailer = mock[EmailService]
       val clientA = fixture.userA
       val clientB = fixture.userC
       val aBorrowedBook = fixture.bookA
@@ -60,9 +61,9 @@ class NotificationSystemTest extends FunSpec with ShouldMatchers with GivenWhenT
 
       then("verify that the message was sent")
       //TODO: problem with mockito!!!
-      //      verify(mailer).sendNotification(clientA, aBorrowedBook)
-      //      verify(mailer).sendNotification(clientB, aBorrowedBook)
-
+//            verify(mailer).sendNotification(clientA, aBorrowedBook)
+//            verify(mailer).sendNotification(clientB, aBorrowedBook)
+      
       and("delete notifications")
       notificationSystem.users should not contain key(aBorrowedBook)
     }

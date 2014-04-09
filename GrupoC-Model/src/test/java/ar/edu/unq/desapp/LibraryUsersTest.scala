@@ -5,6 +5,9 @@ import org.scalatest.GivenWhenThen
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import java.awt.Image
+import ar.edu.unq.desapp.builderTest.UserBuilder
+import ar.edu.unq.desapp.builderTest.BookBuilder
+import ar.edu.unq.desapp.builderTest.UserIdentity
 
 class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
 
@@ -136,7 +139,7 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
 
   describe("Client") {
     it("should borrow two available book") {
-      val client = fixture.client
+      val client:User = new UserIdentity().build
 
       given("an available book")
       val bookA = fixture.bookA
