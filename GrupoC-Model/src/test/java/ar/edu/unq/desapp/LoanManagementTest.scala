@@ -6,7 +6,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import ar.edu.unq.desapp.builders.Builder
 
-class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder{
+class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder {
 
   describe("Loan Management") {
     it("should record borrows in case that the books is available") {
@@ -35,10 +35,27 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       //TODO: See you have to also save the time of the loan and repayment
     }
 
+    it("shouldn't record borrow since there was not book") {
+      val loanManagement = new LoanManagement
+
+      given("two users and one book")
+      val userA = anUser.build
+      val userB = anUser.build
+      val book = aBook.withAmount(1).build
+
+      when("both users want to record same book")
+      loanManagement.recordLoan(userA, book)
+      loanManagement.recordLoan(userB, book)
+      
+      then("you get loaded the userA but no userB")
+      loanManagement.borrowedBooks should contain ((userA, book))
+      loanManagement.borrowedBooks should not contain ((userB, book))
+    }
+
     it("should reserve book in case that it is busy") {
       val loanManagement = new LoanManagement
 
-      given("following 2 users, 3 busy book and maximum allowable reserve")
+      given("following 2 users, 3 busy book and maximum allowable reserve to 3")
       val userA = anUser.withEmail("userA@library.com").build
       val userB = anUser.withEmail("userB@library.com").build
       val busyBookA = aBook.build
@@ -49,13 +66,32 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       loanManagement.reserveBook(userA, busyBookA)
       loanManagement.reserveBook(userB, busyBookA)
       loanManagement.reserveBook(userA, busyBookB)
-      loanManagement.reserveBook(userA, busyBookC)
       loanManagement.reserveBook(userB, busyBookC)
+      loanManagement.reserveBook(userA, busyBookC)
 
       then("Loan Management should save reserve of users")
       loanManagement.reservedBooks should have size (2)
-      loanManagement.reservedBooks should (contain key (userA.email) and contain value (List(busyBookA, busyBookB)))
+      loanManagement.reservedBooks should (contain key (userA.email) and contain value (List(busyBookB, busyBookA)))
       loanManagement.reservedBooks should (contain key (userB.email) and contain value (List(busyBookC)))
+    }
+
+    it("shouldn't allow an user reserve more than allowed") {
+      val loanManagement = new LoanManagement
+      loanManagement.amountAllowLoan = 2
+
+      val user = anUser.build
+      val busyBookA = aBook.build
+      val busyBookB = aBook.build
+      val busyBookC = aBook.build
+
+      when("user reserve 3 books")
+      loanManagement.reserveBook(user, busyBookA)
+      loanManagement.reserveBook(user, busyBookC)
+      loanManagement.reserveBook(user, busyBookB)
+
+      then("the books busyBookA and busyBookC is reserved")
+      loanManagement.reservedBooks should not contain value(busyBookB)
+      loanManagement.reservedBooks should (contain key (user.email) and contain value (List(busyBookC, busyBookA)))
     }
 
     ignore("should sign up the users to notification list") {
