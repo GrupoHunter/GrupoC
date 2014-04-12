@@ -5,52 +5,18 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.GivenWhenThen
 import java.awt.Image
+import ar.edu.unq.desapp.builders.Builder
 
-class LibrarySystemTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
+class LibrarySystemTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder{
 
-  def fixture = new {
-    val system = new LibrarySystem()
-    val searcher = new SearchBookSystem()
-
-    val author1 = new Author("author1")
-    val author2 = new Author("author2")
-    val author3 = new Author("author3")
-    val authors = author1 :: author2 :: author3 :: List()
-
-    //Book A
-    val isbnA = "ISBN-1234"
-    val titleA = "Title A book"
-    val editorialA = "EditorialSarasa"
-    val mockImageA = mock[Image]
-    val descriptionA = "This is a description"
-    val bookA = new Book(titleA, isbnA, editorialA, mockImageA, descriptionA, authors)
-    //Book B
-    val isbnB = "ISBN-5678"
-    val titleB = "Title B book"
-    val editorialB = "EditorialSarasaB"
-    val mockImageB = mock[Image]
-    val descriptionB = "Description of B book"
-    val bookB = new Book(titleB, isbnB, editorialB, mockImageB, descriptionB, authors)
-    //Book C
-    val isbnC = "ISBN-9012"
-    val titleC = "Title C book"
-    val editorialC = "EditorialSaraC"
-    val mockImageC = mock[Image]
-    val descriptionC = "Description of C book"
-    val bookC = new Book(titleC, isbnC, editorialC, mockImageC, descriptionC, authors)
-  }
-  
-  trait Builder {
-    val builder = Nil
-  }
-
-  describe("Library System") { 
+  describe("Library System") {
     it("should load manually the books to the system") {
-      val librarySystem = fixture.system
+      val librarySystem = new LibrarySystem
+
       given("the following books")
-      val bookA = fixture.bookA
-      val bookB = fixture.bookB
-      val bookC = fixture.bookC
+      val bookA = aBook.build
+      val bookB = aBook.build
+      val bookC = aBook.build
 
       when("loading the books")
       librarySystem manualBookLoad (bookA)
@@ -67,19 +33,20 @@ class LibrarySystemTest extends FunSpec with ShouldMatchers with GivenWhenThen w
     }
 
     ignore("should load automatically the books to the system") {
-      val librarySystem = fixture.system
+      val librarySystem = new LibrarySystem
+      val searcher = new SearchBookSystem
 
       given("the following data")
-      val isbn = fixture.isbnA
-      val title = fixture.titleA
+      val isbn = "123-749"
+      val title = "Title"
 
       when("searching the books by isbn and title automatically")
       librarySystem automaticBookLoadByIsbn (isbn)
       librarySystem automaticBookLoadByTitle (title)
 
       then("the books should be found and loaded")
-      val bookLoadedByIsbn: List[Book] = fixture.searcher searchByIsbn (isbn)
-      val bookLoadedByTitle: List[Book] = fixture.searcher searchBook (title)
+      val bookLoadedByIsbn: List[Book] = searcher searchByIsbn (isbn)
+      val bookLoadedByTitle: List[Book] = searcher searchBook (title)
 
       bookLoadedByIsbn should have size (1)
       bookLoadedByIsbn should contain(isbn)

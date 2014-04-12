@@ -4,18 +4,13 @@ import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
-import ar.edu.unq.desapp.builderTest._
-import ar.edu.unq.desapp.builderTest.Builder
+import ar.edu.unq.desapp.builders.Builder
 
 class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder{
 
-  def fixture = new {
-    val loanManagement = new LoanManagement()
-  }
-
   describe("Loan Management") {
     it("should record borrows in case that the books is available") {
-      val loanManagement = fixture.loanManagement
+      val loanManagement = new LoanManagement
 
       val userA = anUser.build
       val userB = anUser.build
@@ -41,7 +36,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
     }
 
     it("should reserve book in case that it is busy") {
-      val loanManagement = fixture.loanManagement
+      val loanManagement = new LoanManagement
 
       given("following 2 users, 3 busy book and maximum allowable reserve")
       val userA = anUser.withEmail("userA@library.com").build
@@ -64,7 +59,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
     }
 
     ignore("should sign up the users to notification list") {
-      val loanManagement = fixture.loanManagement
+      val loanManagement = new LoanManagement
 
       given("following users and a busy book")
       val userA = anUser.withName("Pepe").withEmail("pepe@email.com").build
@@ -77,12 +72,12 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       loanManagement.signUpNotification(userB, busyBook)
 
       then("you get loaded the users")
-      //      loanManagement.usersToNotification should have size (1)
-      //      loanManagement.usersToNotification should (key(busyBook) and contain value (userA :: userB :: List()))
+      // loanManagement.usersToNotification should have size (1)
+      // loanManagement.usersToNotification should (key(busyBook) and contain value (userA :: userB :: List()))
     }
 
     ignore("handle the notifications of available books") {
-      val loanManagement = fixture.loanManagement
+      val loanManagement = new LoanManagement
 
     }
   }

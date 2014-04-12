@@ -1,7 +1,9 @@
-package ar.edu.unq.desapp.builderTest
+package ar.edu.unq.desapp.builders
 
-import ar.edu.unq.desapp._
-
+import ar.edu.unq.desapp.Book
+import ar.edu.unq.desapp.User
+import ar.edu.unq.desapp.LibrarySystem
+import ar.edu.unq.desapp.Librarian
 
 abstract class UserBuilder extends BuilderToTest[User] {
 
@@ -21,7 +23,7 @@ abstract class UserBuilder extends BuilderToTest[User] {
 }
 
 class UserIdentity extends UserBuilder {
-  
+
   override def withName(aName: String): UserBuilder = {
     this.name = name
     this
@@ -49,17 +51,17 @@ class UserIdentity extends UserBuilder {
   }
 }
 
-class LibraryBuilder(var librarySystem: LibrarySystem) extends UserIdentity {
-  
+class LibrarianBuilder(var librarySystem: LibrarySystem) extends UserIdentity {
+  var system = librarySystem
+
   def withLibrarySystem(libSystem: LibrarySystem): UserBuilder = {
     this.librarySystem = libSystem
     this
   }
-  
+
   override def build: Librarian = {
     val librarian = new Librarian(this.name, this.email, this.password, this.librarySystem)
     librarian.borrowedBooks = this.borrowedBooks
     librarian
   }
 }
-

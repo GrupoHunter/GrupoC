@@ -3,8 +3,8 @@ package ar.edu.unq.desapp
 import java.util.ArrayList
 
 class LibrarySystem {
-  var books: List[Book] = List()
-  var users: List[User] = List()
+  var books: List[Book] = Nil
+  var users: List[User] = Nil
 
   def manualBookLoad(aBook: Book, amount: Int = 0) {
     books = aBook :: books

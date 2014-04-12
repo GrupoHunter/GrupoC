@@ -3,7 +3,7 @@ package ar.edu.unq.desapp
 class User(val username: String, val email: String, val password: String) {
 
   var amountAllowLoan: Int = 3
-  var borrowedBooks: List[Book] = List()
+  var borrowedBooks: List[Book] = Nil
 
   def borrowBook(aBook: Book): Unit = borrowedBooks = aBook :: borrowedBooks
 

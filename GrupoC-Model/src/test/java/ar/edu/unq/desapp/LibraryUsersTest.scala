@@ -5,94 +5,81 @@ import org.scalatest.GivenWhenThen
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import java.awt.Image
-import ar.edu.unq.desapp.builderTest.UserBuilder
-import ar.edu.unq.desapp.builderTest.BookBuilder
-import ar.edu.unq.desapp.builderTest.UserIdentity
+import ar.edu.unq.desapp.builders.UserIdentity
+import ar.edu.unq.desapp.builders.Builder
 
-class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar {
-
-  def fixture = new {
-    val librarySystem = new LibrarySystem()
-    val librarian = new Librarian("librarian", "libr@rian.com", "1234", librarySystem)
-    val client = new User("userName", "client@librarian.com", "4651321")
-    val loanManagement = new LoanManagement()
-
-    //BookA
-    val titleA = "Title"
-    val isbnA = "123-749"
-    val editorialA = "Something"
-    val imageA = mock[Image]
-    val descriptionA = "Just to test it"
-    val authorsA = mock[Author] :: List()
-    val amountA = 3
-    val bookA = new Book(titleA, isbnA, editorialA, imageA, descriptionA, authorsA, amountA)
-    //BookB
-    val titleB = "The True"
-    val isbnB = "987-789"
-    val editorialB = "What's up?"
-    val imageB = mock[Image]
-    val descriptionB = "Yes, i haven't more imagination"
-    val authorsB = mock[Author] :: authorsA
-    val bookB = new Book(titleB, isbnB, editorialB, imageB, descriptionB, authorsB)
-    //BookC
-    val titleC = "FullMoon"
-    val isbnC = "156-5746"
-    val editorialC = "Sonata Artica"
-    val imageC = mock[Image]
-    val descriptionC = "i was listened Sonata Artica"
-    val authorsC = mock[Author] :: List()
-    val bookC = new Book(titleC, isbnC, editorialC, imageC, descriptionC, authorsC)
-  }
+class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder {
 
   describe("Librarian") {
     it("should add books to the system") {
-      val librarian = fixture.librarian
-      val system = fixture.librarySystem
+      val librarian = aLibrarian.build
 
       given("following two books")
-      val bookA = fixture.bookA
-      val bookB = fixture.bookB
+      //TODO - I think this books should be created
+      // with default constructor instead of a builder
+      val bookA =
+        aBook
+          .withTitle("Title")
+          .withIsbn("123-749")
+          .withEditorial("Something")
+          .withDescription("Just to test it")
+          .withAuthors(mock[Author] :: Nil).build
+
+      val bookB =
+        aBook
+          .withTitle("The True")
+          .withIsbn("987-789")
+          .withEditorial("What's up?")
+          .withDescription("Yes, i haven't more imagination")
+          .withAuthors(mock[Author] :: Nil)
+          .withAmount(3)
+          .build
 
       when("the librarian add the books to system")
       librarian addBookToSystem (bookA)
       librarian addBookToSystem (bookB)
 
       then("the books should be inside to system")
-      val booksToSystem: List[Book] = system.books
+      val booksToSystem: List[Book] = librarian.librarySystem.books
 
       booksToSystem should have size (2)
-      booksToSystem(0) should have('title(bookA.title))
-      booksToSystem(0) should have('isbn(bookA.isbn))
-      booksToSystem(0) should have('editorial(bookA.editorial))
-      booksToSystem(0) should have('description(bookA.description))
-      booksToSystem(0) should have('authors(bookA.authors))
+      booksToSystem(0) should have('title(bookB.title))
+      booksToSystem(0) should have('isbn(bookB.isbn))
+      booksToSystem(0) should have('editorial(bookB.editorial))
+      booksToSystem(0) should have('description(bookB.description))
+      booksToSystem(0) should have('authors(bookB.authors))
       booksToSystem(0).amount should be(3)
 
-      booksToSystem(1) should have('title(bookB.title))
-      booksToSystem(1) should have('isbn(bookB.isbn))
-      booksToSystem(1) should have('editorial(bookB.editorial))
-      booksToSystem(1) should have('description(bookB.description))
-      booksToSystem(1) should have('authors(bookB.authors))
+      booksToSystem(1) should have('title(bookA.title))
+      booksToSystem(1) should have('isbn(bookA.isbn))
+      booksToSystem(1) should have('editorial(bookA.editorial))
+      booksToSystem(1) should have('description(bookA.description))
+      booksToSystem(1) should have('authors(bookA.authors))
       booksToSystem(1).amount should be(1)
 
     }
 
-    it("should modify a book to the system") {
-      val librarian = fixture.librarian
-      val system = fixture.librarySystem
+    ignore("should modify a book to the system") {
+      val librarian = aLibrarian.build
 
       given("that the system has added one book")
-      val bookA = fixture.bookA
+      val bookA = aBook.build
       librarian addBookToSystem (bookA)
 
       when("will go to modify a book")
-      val bookToModify = fixture.librarySystem.books(0)
-      val bookModified = fixture.bookC
+      val bookToModify = librarian.librarySystem.books(0)
+      val bookModified =
+        aBook
+          .withTitle("FullMoon")
+          .withIsbn("156-5746")
+          .withEditorial("Sonata Arctica")
+          .withDescription("I was listening Sonata Arctica")
+          .build
 
       librarian.modifyBookFromTheSystem(bookToModify, bookModified)
 
       then("must have the modified book")
-      val books = system.books(0)
+      val books = librarian.librarySystem.books(0)
 
       books should have('title(bookModified.title))
       books should have('isbn(bookModified.isbn))
@@ -102,22 +89,29 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
     }
 
     it("should delete a book") {
-      val librarian = fixture.librarian
-      val bookA = fixture.bookA
-      val bookB = fixture.bookB
-      val bookC = fixture.bookC
+      val librarian = aLibrarian.build
 
       given("following books")
+      val bookA = aBook.build
+      val bookB =
+        aBook
+          .withTitle("Some title")
+          .build
+      val bookC =
+        aBook
+          .withTitle("FullMoon")
+          .build
+
       librarian addBookToSystem (bookA)
       librarian addBookToSystem (bookB)
       librarian addBookToSystem (bookC)
 
       when("you want delete a book")
-      val bookToRemove = fixture.librarySystem.books(0)
+      val bookToRemove = librarian.librarySystem.books(0)
       librarian deleteBookFromTheSystem (bookToRemove)
 
       then("should have the books")
-      val books = fixture.librarySystem.books
+      val books = librarian.librarySystem.books
 
       books should have size (2)
       books(0) should have('title(bookB.title))
@@ -137,42 +131,48 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
     }
   }
 
-  describe("Client") {
+  describe("User") {
     it("should borrow two available book") {
-      val client:User = new UserIdentity().build
+      val user = anUser.build
 
       given("an available book")
-      val bookA = fixture.bookA
-      val bookB = fixture.bookB
+      val bookA =
+        aBook
+        .withTitle("Title")
+        .build
+      val bookB =
+        aBook
+        .withTitle("Lalala")
+        .build
 
       when("client wanna borrow a book")
-      client.borrowBook(bookA)
-      client.borrowBook(bookB)
+      user.borrowBook(bookA)
+      user.borrowBook(bookB)
 
       then("should have the books")
 
-      client.borrowedBooks should have size (2)
-      client borrowedBooks (0) should have('title(bookA.title))
-      client borrowedBooks (1) should have('title(bookB.title))
+      user.borrowedBooks should have size (2)
+      user borrowedBooks (0) should have('title(bookB.title))
+      user borrowedBooks (1) should have('title(bookA.title))
     }
 
-    it("should return a book") {
-      val client = fixture.client
+    it("should be able to return a book") {
+      val user = anUser.build
 
-      given("following books that client have loaned")
-      val bookA = fixture.bookA
-      val bookB = fixture.bookB
-      val bookC = fixture.bookC
-      val currentBorrowedBooks = bookA :: bookB :: bookC :: List()
+      given(" the following books that user have loaned")
+      val bookA = aBook.build
+      val bookB = aBook.build
+      val bookC = aBook.build
+      val currentBorrowedBooks = bookA :: bookB :: bookC :: Nil
 
-      client.borrowedBooks = currentBorrowedBooks
+      user.borrowedBooks = currentBorrowedBooks
 
-      when("client wanna return a book")
-      client.returnBook(bookB)
+      when("user want return a book")
+      user.returnBook(bookB)
 
-      then("must have the books")
-      client.borrowedBooks should have size (2)
-      client.borrowedBooks should contain((bookA :: bookC :: List()))
+      then("must have only the books")
+      user.borrowedBooks should have size (2)
+      user.borrowedBooks should contain((bookA :: bookC :: Nil))
     }
 
     ignore("comment a book") {
