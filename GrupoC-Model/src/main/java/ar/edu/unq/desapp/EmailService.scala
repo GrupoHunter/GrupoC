@@ -1,3 +1,11 @@
 package ar.edu.unq.desapp
 
-class EmailService
+/**
+ * Just simulate service email
+ */
+class EmailService {
+  
+  def sendNotification(user: User, aBorrowedBook: Book) = {
+    
+  }
+}

@@ -119,7 +119,21 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
     }
 
     ignore("configure amount to allow loan") {
-      //TODO: configure amount to allow loan
+      given("some users inside the system")
+      val librarySystem = new LibrarySystem
+      val librarian = aLibrarian.withLibrarySystem(librarySystem).build
+
+      val userA = anUser.withAmountAllowLoan(2).build
+      val userB = anUser.withAmountAllowLoan(4).build
+      val userC = aLibrarian.withAmountAllowLoan(3).build
+      librarySystem.users = userA :: userB :: userC :: librarian :: Nil
+
+      when("set max reserves amount to 5")
+      //XXX LibrarianBuilder isn't building a Librarian else a User
+//      librarian.configureMaxReservesAmount(5)
+      
+      then("all users should have 5")
+      librarySystem.users foreach(user => user should be(5))
     }
 
     ignore("configure max date to loan") {
@@ -138,12 +152,12 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
       given("an available book")
       val bookA =
         aBook
-        .withTitle("Title")
-        .build
+          .withTitle("Title")
+          .build
       val bookB =
         aBook
-        .withTitle("Lalala")
-        .build
+          .withTitle("Lalala")
+          .build
 
       when("client wanna borrow a book")
       user.borrowBook(bookA)

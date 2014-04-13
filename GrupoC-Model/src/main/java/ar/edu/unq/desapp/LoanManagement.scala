@@ -1,15 +1,16 @@
 package ar.edu.unq.desapp
 
-class LoanManagement {
+import org.joda.time.DateTime
+
+class LoanManagement(val notificationSystem: NotificationSystem) {
   var reservedBooks: Map[String, List[Book]] = Map()
   var borrowedBooks: List[(User, Book)] = Nil
-  var amountAllowLoan: Int = 3
 
   def reserveBook(anUser: User, aBook: Book) {
     val isReserved: Boolean = reservedBooks.values.exists(b => b.contains(aBook))
     val reserveBooksToUser: List[Book] = reservedBooks.get(anUser.email) match {
       case Some(books) =>
-        if (books.length < amountAllowLoan && !isReserved)
+        if (books.length < anUser.amountAllowLoan && !isReserved)
           aBook :: books
         else
           books
@@ -19,13 +20,13 @@ class LoanManagement {
   }
 
   def recordLoan(anUser: User, aBook: Book) {
-    if (aBook.amount - 1 >= 0){
+    if (aBook.amount - 1 >= 0){ //validate
       aBook.amount -= 1
       borrowedBooks = (anUser, aBook) :: borrowedBooks
     }
   }
   
   def signUpNotification(anUser: User, aBook: Book) {
-    //TODO
+    notificationSystem.addObserver(anUser, aBook)
   }
 }

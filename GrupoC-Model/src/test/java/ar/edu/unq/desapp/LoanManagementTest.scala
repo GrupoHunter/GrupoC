@@ -1,17 +1,20 @@
 package ar.edu.unq.desapp
 
+import org.joda.time.DateTime
 import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.mock.MockitoSugar
+import org.specs2.mock.Mockito
+
 import ar.edu.unq.desapp.builders.Builder
 
-class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder {
+class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen with Mockito with Builder {
 
   describe("Loan Management") {
     it("should record borrows in case that the books is available") {
-      val loanManagement = new LoanManagement
-
+      val loanManagement = aLoanManagement
+      val date = new DateTime
+      
       val userA = anUser.build
       val userB = anUser.build
 
@@ -36,7 +39,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
     }
 
     it("shouldn't record borrow since there was not book") {
-      val loanManagement = new LoanManagement
+      val loanManagement = aLoanManagement
 
       given("two users and one book")
       val userA = anUser.build
@@ -53,9 +56,9 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
     }
 
     it("should reserve book in case that it is busy") {
-      val loanManagement = new LoanManagement
+      val loanManagement = aLoanManagement
 
-      given("following 2 users, 3 busy book and maximum allowable reserve to 3")
+      given("following 2 users, 3 busy book and maximum allowable reserve 3")
       val userA = anUser.withEmail("userA@library.com").build
       val userB = anUser.withEmail("userB@library.com").build
       val busyBookA = aBook.build
@@ -71,15 +74,14 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
 
       then("Loan Management should save reserve of users")
       loanManagement.reservedBooks should have size (2)
-      loanManagement.reservedBooks should (contain key (userA.email) and contain value (List(busyBookB, busyBookA)))
-      loanManagement.reservedBooks should (contain key (userB.email) and contain value (List(busyBookC)))
+      loanManagement.reservedBooks should (contain key ("userA@library.com") and contain value (List(busyBookB, busyBookA)))
+      loanManagement.reservedBooks should (contain key ("userB@library.com") and contain value (List(busyBookC)))
     }
 
     it("shouldn't allow an user reserve more than allowed") {
-      val loanManagement = new LoanManagement
-      loanManagement.amountAllowLoan = 2
-
-      val user = anUser.build
+      val loanManagement = aLoanManagement
+      
+      val user = anUser.withAmountAllowLoan(2).build
       val busyBookA = aBook.build
       val busyBookB = aBook.build
       val busyBookC = aBook.build
@@ -90,16 +92,16 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       loanManagement.reserveBook(user, busyBookB)
 
       then("the books busyBookA and busyBookC is reserved")
+      loanManagement.reservedBooks should contain key (user.email)
       loanManagement.reservedBooks should not contain value(busyBookB)
-      loanManagement.reservedBooks should (contain key (user.email) and contain value (List(busyBookC, busyBookA)))
     }
 
-    ignore("should sign up the users to notification list") {
-      val loanManagement = new LoanManagement
+    it("should sign up the users to notification list") {
+      val loanManagement = new LoanManagement(mock[NotificationSystem])
 
       given("following users and a busy book")
-      val userA = anUser.withName("Pepe").withEmail("pepe@email.com").build
-      val userB = anUser.withName("Jose").withEmail("jose@emai.com").build
+      val userA = anUser.build
+      val userB = anUser.build
 
       val busyBook = aBook.build
 
@@ -108,12 +110,12 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       loanManagement.signUpNotification(userB, busyBook)
 
       then("you get loaded the users")
-      // loanManagement.usersToNotification should have size (1)
-      // loanManagement.usersToNotification should (key(busyBook) and contain value (userA :: userB :: List()))
+      there was one(loanManagement.notificationSystem).addObserver(userA, busyBook)
+      there was one(loanManagement.notificationSystem).addObserver(userB, busyBook)
     }
 
     ignore("handle the notifications of available books") {
-      val loanManagement = new LoanManagement
+      val loanManagement = aLoanManagement
 
     }
   }

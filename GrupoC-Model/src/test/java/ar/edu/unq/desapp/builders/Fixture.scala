@@ -16,9 +16,9 @@ class Fixture extends MockitoSugar {
   val librarySystem = new LibrarySystem()
   val librarian = new Librarian("librarian", "libr@rian.com", "1234", librarySystem)
   val client = new User("userName", "client@librarian.com", "4651321")
-  val loanManagement = new LoanManagement()
-  val searcher = new SearchBookSystem()
   val notificationSystem = new NotificationSystem()
+  val loanManagement = new LoanManagement(notificationSystem)
+  val searcher = new SearchBookSystem()
   val emailService = mock[EmailService]
 
   //Users

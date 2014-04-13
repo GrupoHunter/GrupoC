@@ -10,6 +10,7 @@ abstract class UserBuilder extends BuilderToTest[User] {
   var name: String = "no name"
   var password: String = "no password"
   var email: String = "no email"
+  var amountAllowLoan = 3 //Default value
   var borrowedBooks: List[Book] = List()
 
   def withName(aName: String): UserBuilder
@@ -20,6 +21,7 @@ abstract class UserBuilder extends BuilderToTest[User] {
 
   def withBorrowedBooks(books: List[Book]): UserBuilder
 
+  def withAmountAllowLoan(amount: Int): UserBuilder
 }
 
 class UserIdentity extends UserBuilder {
@@ -41,6 +43,11 @@ class UserIdentity extends UserBuilder {
 
   override def withBorrowedBooks(books: List[Book]): UserBuilder = {
     this.borrowedBooks = books
+    this
+  }
+  
+  override def withAmountAllowLoan(amount: Int): UserBuilder = {
+    this.amountAllowLoan = amount
     this
   }
 

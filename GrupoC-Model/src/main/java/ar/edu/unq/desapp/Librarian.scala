@@ -16,7 +16,7 @@ class Librarian(username: String, email: String, password: String, val librarySy
 
   def deleteBookFromTheSystem(aBook: Book) {librarySystem removeBook (aBook.isbn)}
 
-  def configureMaxReservesAmount(amount: Int) {} //TODO implement
+  def configureMaxReservesAmount(amount: Int) {} //TODO
 
   def configureMaxDaysOfLoan(maxDate: Int) {} //TODO implement max date to loan
 
