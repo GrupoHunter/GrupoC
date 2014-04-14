@@ -14,7 +14,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
     it("should record borrows in case that the books is available") {
       val loanManagement = aLoanManagement
       val date = new DateTime
-      
+
       val userA = anUser.build
       val userB = anUser.build
 
@@ -30,16 +30,41 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       loanManagement.recordLoan(userB, bookC)
 
       then("you get loaded the users with your loans books")
-      loanManagement.borrowedBooks should have size (3)
-      loanManagement.borrowedBooks should contain((userA, bookA))
-      loanManagement.borrowedBooks should contain((userB, bookB))
-      loanManagement.borrowedBooks should contain((userB, bookC))
+      val borrowedBooks = loanManagement.borrowedBooks
 
-      //TODO: See you have to also save the time of the loan and repayment
+      borrowedBooks should have size (3)
+      borrowedBooks(2) should have('anUser(userA))
+      borrowedBooks(2) should have('aBook(bookA))
+
+      borrowedBooks(1) should have('anUser(userB))
+      borrowedBooks(1) should have('aBook(bookB))
+
+      borrowedBooks(0) should have('anUser(userB))
+      borrowedBooks(0) should have('aBook(bookC))
+
+    }
+
+    ignore("should be loaded date of loan") {
+      val loanManagement = new LoanManagement(mock[NotificationSystem])
+      val date = new DateTime
+
+      given("an user wanna load one book")
+      val user = anUser.build
+      val book = aBook.build
+      
+      when("user request the book")
+      loanManagement.recordLoan(user, book)
+      
+      then("you get loaded date today and 4 day after")
+      val dayOfLoan = loanManagement.borrowedBooks(0).dateOfLoan
+      val refundDate = loanManagement.borrowedBooks(0).refundDate
+      
+      dayOfLoan.getDayOfYear() should be(date.getDayOfYear())
+//      refundDate.getDayOfYear() should be(date.)
     }
 
     it("shouldn't record borrow since there was not book") {
-      val loanManagement = aLoanManagement
+      val loanManagement = new LoanManagement(mock[NotificationSystem])
 
       given("two users and one book")
       val userA = anUser.build
@@ -49,10 +74,12 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       when("both users want to record same book")
       loanManagement.recordLoan(userA, book)
       loanManagement.recordLoan(userB, book)
-      
+
       then("you get loaded the userA but no userB")
-      loanManagement.borrowedBooks should contain ((userA, book))
-      loanManagement.borrowedBooks should not contain ((userB, book))
+      val borrowedBooks = loanManagement.borrowedBooks
+
+      borrowedBooks(0) should have('anUser(userA))
+      borrowedBooks(0) should have('aBook(book))
     }
 
     it("should reserve book in case that it is busy") {
@@ -80,7 +107,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
 
     it("shouldn't allow an user reserve more than allowed") {
       val loanManagement = aLoanManagement
-      
+
       val user = anUser.withAmountAllowLoan(2).build
       val busyBookA = aBook.build
       val busyBookB = aBook.build

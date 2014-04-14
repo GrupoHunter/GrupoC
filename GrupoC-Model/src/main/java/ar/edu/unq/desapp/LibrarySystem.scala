@@ -22,8 +22,10 @@ class LibrarySystem {
   }
 
   def removeBook(anIsbn: String) {
-    val book = getBookByIsbn(anIsbn)
-    books filter (b => b.equals(book.get))
+    this.getBookByIsbn(anIsbn) match {
+      case Some(book) => books filter (b => b.equals(book))
+      case None => Nil
+    }
   }
 
   def changeAmount(anIsbn: String, amount: Int) {
@@ -36,11 +38,6 @@ class LibrarySystem {
   }
 
   def getBookByIsbn(anIsbn: String): Option[Book] = {
-    var result: List[Book] = books filter (b => (b.isbn == anIsbn))
-    if (result.isEmpty) {
-      None
-    } else {
-      Some(result.head)
-    }
+    books find (b => (b.isbn == anIsbn))
   }
 }

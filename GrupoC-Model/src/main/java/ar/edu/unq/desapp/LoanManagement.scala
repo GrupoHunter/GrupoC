@@ -4,7 +4,8 @@ import org.joda.time.DateTime
 
 class LoanManagement(val notificationSystem: NotificationSystem) {
   var reservedBooks: Map[String, List[Book]] = Map()
-  var borrowedBooks: List[(User, Book)] = Nil
+  var borrowedBooks: List[LoanBook] = Nil
+  var maxDaysOfLoan: Int = 4 //Default
 
   def reserveBook(anUser: User, aBook: Book) {
     val isReserved: Boolean = reservedBooks.values.exists(b => b.contains(aBook))
@@ -22,7 +23,12 @@ class LoanManagement(val notificationSystem: NotificationSystem) {
   def recordLoan(anUser: User, aBook: Book) {
     if (aBook.amount - 1 >= 0){ //validate
       aBook.amount -= 1
-      borrowedBooks = (anUser, aBook) :: borrowedBooks
+      
+      var refundDate = new DateTime
+      refundDate.plusDays(maxDaysOfLoan)
+      
+      val loanBook = new LoanBook(anUser, aBook, new DateTime, refundDate)
+      borrowedBooks = (loanBook) :: borrowedBooks
     }
   }
   

@@ -7,9 +7,10 @@ import org.scalatest.mock.MockitoSugar
 import java.awt.Image
 import ar.edu.unq.desapp.builders.UserIdentity
 import ar.edu.unq.desapp.builders.Builder
+import ar.edu.unq.desapp.builders.Fixture
 
 class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen with MockitoSugar with Builder {
-
+  
   describe("Librarian") {
     it("should add books to the system") {
       val librarian = aLibrarian.build
@@ -89,7 +90,8 @@ class LibraryUsersTest extends FunSpec with ShouldMatchers with GivenWhenThen wi
     }
 
     it("should delete a book") {
-      val librarian = aLibrarian.build
+      val fixture = new Fixture
+      val librarian = fixture.aLibrarian.build
 
       given("following books")
       val bookA = aBook.build
