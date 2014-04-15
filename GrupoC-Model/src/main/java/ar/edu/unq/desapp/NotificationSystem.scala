@@ -5,11 +5,16 @@ class NotificationSystem {
   var mailer: EmailService = new EmailService
 
   def notifyAllUsersOfAvailableBook() {
-
+    //TODO implement
   }
 
   def notifyDebtorUser(aUser: User) {
+    //TODO implement
+  }
 
+  def notifyUserOfAvailableBook(aBook: Book) {
+    //TODO we need one email service
+    //mailer.sendNotification(user, aBorrowedBook)
   }
 
   def addObserver(anUser: User, aBook: Book) {
@@ -25,6 +30,6 @@ class NotificationSystem {
       case Some(users) => users.foreach(user => mailer.sendNotification(user, aBook))
       case None => Nil
     }
-    users = users-(aBook)
+    users = users - (aBook)
   }
 }

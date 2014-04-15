@@ -21,17 +21,23 @@ class LoanManagement(val notificationSystem: NotificationSystem) {
   }
 
   def recordLoan(anUser: User, aBook: Book) {
-    if (aBook.amount - 1 >= 0){ //validate
+    if (aBook.amount - 1 >= 0) { //validate
       aBook.amount -= 1
-      
-      var refundDate = new DateTime
-      refundDate.plusDays(maxDaysOfLoan)
-      
+
+      val refundDate = new DateTime().plusDays(4)
       val loanBook = new LoanBook(anUser, aBook, new DateTime, refundDate)
       borrowedBooks = (loanBook) :: borrowedBooks
+
+      anUser.borrowBook(aBook)
     }
   }
-  
+
+  def deleteLoan(anUser: User, aBook: Book) {
+	  borrowedBooks = borrowedBooks.filter(b => b.equals(aBook))
+	  anUser.returnBook(aBook)
+	  notificationSystem.notifyAllUsers(aBook)
+  }
+
   def signUpNotification(anUser: User, aBook: Book) {
     notificationSystem.addObserver(anUser, aBook)
   }

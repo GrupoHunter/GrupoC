@@ -44,9 +44,10 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
 
     }
 
-    ignore("should be loaded date of loan") {
+    it("should be loaded date of loan") {
       val loanManagement = new LoanManagement(mock[NotificationSystem])
       val date = new DateTime
+      val endDate = date.plusDays(4)
 
       given("an user wanna load one book")
       val user = anUser.build
@@ -60,7 +61,7 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       val refundDate = loanManagement.borrowedBooks(0).refundDate
       
       dayOfLoan.getDayOfYear() should be(date.getDayOfYear())
-//      refundDate.getDayOfYear() should be(date.)
+      refundDate.getDayOfYear() should be(endDate.getDayOfYear())
     }
 
     it("shouldn't record borrow since there was not book") {
@@ -141,9 +142,22 @@ class LoanManagementTest extends FunSpec with ShouldMatchers with GivenWhenThen 
       there was one(loanManagement.notificationSystem).addObserver(userB, busyBook)
     }
 
-    ignore("handle the notifications of available books") {
-      val loanManagement = aLoanManagement
+    it("handle the notifications of available books") {
+      val loanManagement = new LoanManagement(mock[NotificationSystem])
+      
+      given("following user who borrow a book")
+      val userWithBook = anUser.build
+      val borrowedBook = aBook.build
+      loanManagement.recordLoan(userWithBook, borrowedBook)
 
+      when("other user who demand reserve this book and returned")
+      val userAToNotify = anUser.build
+      loanManagement.signUpNotification(userAToNotify, borrowedBook)
+      
+      loanManagement.deleteLoan(userWithBook, borrowedBook)
+      
+      then("it must send notice who have reserved")
+      there was one(loanManagement.notificationSystem).notifyUserOfAvailableBook(borrowedBook)
     }
   }
 }
