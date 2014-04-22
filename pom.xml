@@ -79,8 +79,8 @@
 			<version>2.3.10</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- /SCALA -->
+		
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>

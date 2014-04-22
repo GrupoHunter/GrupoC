@@ -13,6 +13,24 @@
 	<name>GrupoC-Presentation Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+			<version>6.14.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+			<version>6.14.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-spring</artifactId>
+			<version>6.14.0</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<sourceDirectory>/src/main/java</sourceDirectory>
 		<testSourceDirectory>/src/test/java</testSourceDirectory>
