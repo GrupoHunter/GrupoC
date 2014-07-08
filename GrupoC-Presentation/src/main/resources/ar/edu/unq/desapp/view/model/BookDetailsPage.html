@@ -1,0 +1,50 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+	<form wicket:id="bookForm">
+		<br><h1 wicket:id="book.title" /><br>
+		<img wicket:id="cover" width="128" />
+        <br><br>
+
+        <table class="table">
+            <tr>
+                <td><wicket:message key="isbn" /></td><td wicket:id="book.isbn" />
+            </tr>
+            <tr>
+                <td><wicket:message key="authors" /></td><td wicket:id="getAuthors" />
+            </tr>
+            <tr>
+                <td><wicket:message key="editorial" /></td><td wicket:id="book.editorial" />
+            </tr>
+        </table>
+
+        <!-- TODO - Add comments of the book and similar books recommended -->
+<!--        <table class="table">
+            <tbody>
+            <tr class="thead">&lt;!&ndash; Table Headers &ndash;&gt;
+                <th><wicket:message key="row-comment">Comment</wicket:message></th>
+                <th><wicket:message key="row-author">Author</wicket:message></th>
+                <th><wicket:message key="row-date">Date</wicket:message></th>
+            </tr>&lt;!&ndash; /Table Headers &ndash;&gt;
+
+            <tr wicket:id="comments">
+                <td><p wicket:id="comment" /></td>
+                <td><p wicket:id="author" /></td>
+                <td><p wicket:id="date" /></td>
+            </tr>
+            </tbody>
+        </table>
+        &lt;!&ndash; Pagination nav &ndash;&gt;
+        <ul wicket:id="navigator" />-->
+
+        <div>
+            <textarea rows="3" wicket:id="book_comment"
+                      placeholder="Add a comment with you thoughts" class="form-control" />
+        </div>
+        <br>
+        <div id="actions">
+            <button wicket:id="addComment" class="btn btn-primary">
+                <wicket:message key="btn-comment" /></button>
+            <button wicket:id="back" class="btn btn-default">
+                <wicket:message key="btn-back" /></button>
+        </div>
+	</form>
+</wicket:extend>

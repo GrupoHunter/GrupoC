@@ -1,0 +1,65 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+	<div class="container">
+        <h1 wicket:id="title" />
+
+        <form wicket:id="bookForm" class="form">
+        	<fieldset>
+
+        	<div class="form-group">
+	        	<label class="control-label"><wicket:message key="title" /></label>
+	        	<div class="controls">
+	        		<input wicket:id="book_title" type="text" required
+                           placeholder="Ej: Viaje al centro de la tierra" class="form-control" />
+	        	</div>
+        	</div>
+        	
+        	<div class="form-group">
+	        	<label class="control-label"><wicket:message key="isbn" /></label>
+	        	<div class="controls">
+	        		<input wicket:id="book_isbn" type="text" required
+                           placeholder="Ej: IB-172TG34" class="form-control" />
+	        	</div>
+        	</div>
+        	
+        	<div class="form-group">
+    			<label class="control-label"><wicket:message key="editorial" /></label>
+    			<div class="controls">
+    				<input wicket:id="book_editorial" type="text" required
+                           placeholder="Ej: Pepitos editorial" class="form-control"/>
+    	    	</div>
+        	</div>
+
+            <div class="form-group">
+                <label class="control-label"><wicket:message key="image" /></label>
+                <div class="controls">
+                    <input wicket:id="book_imageUrl" type="text"
+                           placeholder="Ej: http://goo.gl/UQDZMU" class="form-control" />
+                </div>
+            </div>
+        	
+        	<div class="form-group">
+    			<label class="control-label"><wicket:message key="description" /></label>
+    			<div class="controls">
+    				<textarea rows="3" wicket:id="book_description"
+                              placeholder="Ej: This is a description" class="form-control" />
+    	    	</div>
+        	</div>
+
+            <div class="form-group">
+                <label class="control-label"><wicket:message key="authors" /></label>
+                <div class="controls">
+                    <input wicket:id="book_authors" type="text" required
+                           placeholder="Ej: Julio Verne" class="form-control" />
+                </div>
+            </div>
+        	
+            <div wicket:id="feedbackPanel" class="alert alert-error" />
+
+            <div class="form-actions">
+                <button wicket:id="accept" type="submit" class="btn btn-primary"><wicket:message key="btn-accept" /></button>
+                <button wicket:id="cancel" type="submit" class="btn btn-default" formnovalidate><wicket:message key="btn-cancel" /></button>
+            </div>
+            </fieldset>
+        </form>
+    </div>
+</wicket:extend>

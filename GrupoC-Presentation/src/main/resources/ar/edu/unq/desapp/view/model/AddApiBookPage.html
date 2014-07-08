@@ -1,0 +1,24 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <div class="container">
+        <h1 wicket:id="title" />
+
+        <form wicket:id="bookForm" class="form">
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label">Isbn</label>
+                    <div class="controls">
+                        <input wicket:id="book_isbn" type="text" required
+                               placeholder="Ej: 0321700694" class="form-control" />
+                    </div>
+                </div>
+
+                <div wicket:id="feedbackPanel" class="alert alert-error" />
+
+                <div class="form-actions">
+                    <button wicket:id="getData" type="submit" class="btn btn-primary"><wicket:message key="btn-get" /></button>
+                    <button wicket:id="cancel" type="submit" class="btn btn-default" formnovalidate><wicket:message key="btn-cancel" /></button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</wicket:extend>

@@ -11,3 +11,39 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+
+# Eclipse
+.project
+.settings
+
+# Idea
+.idea/
+*.iml
+
+GrupoC-Model/.cache
+GrupoC-Model/.classpath
+GrupoC-Model/.project
+GrupoC-Model/.settings
+GrupoC-Model/target
+GrupoC-Model/scalastyle-output.xml
+
+GrupoC-Persistence/.cache
+GrupoC-Persistence/.classpath
+GrupoC-Persistence/.project
+GrupoC-Persistence/.settings
+GrupoC-Persistence/target
+GrupoC-Persistence/scalastyle-output.xml
+
+GrupoC-Presentation/.cache
+GrupoC-Presentation/.classpath
+GrupoC-Presentation/.project
+GrupoC-Presentation/.settings
+GrupoC-Presentation/target
+GrupoC-Presentation/scalastyle-output.xml
+
+GrupoC-Service/.cache
+GrupoC-Service/.classpath
+GrupoC-Service/.project
+GrupoC-Service/.settings
+GrupoC-Service/target
+GrupoC-Service/scalastyle-output.xml

@@ -1,0 +1,33 @@
+<FindBugsFilter>
+  <Match>
+    <Bug category="PERFORMANCE"/>
+  </Match>
+    <Match>
+    <Bug category="BAD_PRACTICE"/>
+  </Match>
+    <Match>
+    <Bug category="CORRECTNESS"/>
+  </Match>
+    <Match>
+    <Bug category="MALICIOUS_CODE"/>
+  </Match>
+  	<Match>
+    <Bug category="MALICIOUS_CODE_VULNERABILITY"/>
+  </Match>
+    <Match>
+    <Bug category="MULTITHREADED_CORRECTNESS"/>
+  </Match>
+  <Match>
+    <Bug category="SECURITY"/>
+  </Match>	
+  <Match>
+    <Bug category="EXPERIMENTAL"/>
+  </Match>
+  <Match>
+    <Bug category="INTERNATIONALIZATION"/>
+  </Match>	
+  
+   <Match>
+    <Bug category="DODGY"/>
+  </Match>
+</FindBugsFilter>

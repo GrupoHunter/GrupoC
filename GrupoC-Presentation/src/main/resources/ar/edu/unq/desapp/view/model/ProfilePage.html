@@ -1,0 +1,24 @@
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+    <form wicket:id="profileForm" class="container">
+        <br>
+        <h3>User Profile</h3>
+        <br>
+
+        <span>Username</span>
+        <input wicket:id="getUsername" class="form-control"
+               type="text" value="TODO-getUsername" />
+
+        <span>Email</span>
+        <input wicket:id="getEmail" class="form-control"
+               type="email" value="TODO-getEmail" />
+
+        <span>Preferred kinds of books</span>
+        <input wicket:id="kindsBook" class="form-control"
+               type="text" value="TODO-getKindsOfBook" />
+
+        <button wicket:id="update" class="btn btn-lg btn-primary"
+                type="submit">Update profile</button>
+
+        <button wicket:id="back" class="btn btn-link">Back</button>
+    </form>
+</wicket:extend>
