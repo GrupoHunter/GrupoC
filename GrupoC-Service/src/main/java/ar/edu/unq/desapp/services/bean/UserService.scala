@@ -11,10 +11,8 @@ import scala.collection.JavaConversions._
 
 class UserService extends GenericService[User] with UserDetailsService {
 
-  private val serialVersionUID: Long = 1L
-
   override def loadUserByUsername(username: String): UserDetails = {
-    var user: User = this.findByUsername(username)
+    val user: User = this.findByUsername(username)
     if (user != null)
       new UserLogin(user)
     else

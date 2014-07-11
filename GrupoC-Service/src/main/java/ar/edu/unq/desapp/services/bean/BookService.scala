@@ -23,7 +23,7 @@ class BookService extends GenericService[Book] {
   def retriveAllMostBorrowed: java.util.List[Book] = {
     val loanBooks: java.util.List[LoanBook] = loanBookRepository.findAll
     var allMostBorrowedBooks: Map[Book, Int] = Map()
-    for(loan <- loanBooks) { //I know, it's horrible
+    for(loan <- loanBooks) { //I know, it's horrible - TODO Refactor
       if(allMostBorrowedBooks.contains(loan.book)) {
         allMostBorrowedBooks.updated(loan.book, allMostBorrowedBooks.get(loan.book))
       }
@@ -34,6 +34,16 @@ class BookService extends GenericService[Book] {
     allMostBorrowedBooks.keySet.toList
   }
 
+  def alreadyExists(aBook: Book): Boolean = { //I know, it's horrible - TODO Refactor
+    val books: java.util.List[Book] = bookRepository.findAll
+    var result: Boolean = false
+
+    for( book <- books ) {
+      if(book.isbn == aBook.isbn) result = true
+    }
+    result
+  }
+
 ////////////////// Google Books Api Service
   class CC[T] { def unapply(a:Any):Option[T] = Some(a.asInstanceOf[T]) }
 
@@ -41,7 +51,7 @@ class BookService extends GenericService[Book] {
   object L extends CC[List[Any]]
   object S extends CC[String]
 
-  def getExternalBook(isbn: String = "9589760457") = {
+  def getExternalBook(isbn: String) = {
     getBook(isbn).head
   }
 

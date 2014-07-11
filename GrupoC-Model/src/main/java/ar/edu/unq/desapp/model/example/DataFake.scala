@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.model.example
 
 import ar.edu.unq.desapp.model.bean.{Book, LoanBook, User}
 import ar.edu.unq.desapp.utils.builder.Builder
+import org.joda.time.DateTime
 
 object DataFake extends Builder {
   /* Generate users */
@@ -22,6 +23,7 @@ object DataFake extends Builder {
     .withIsbn("isbn-1231")
     .withEditorial("Editorial Argentina")
     .withDescription("Libro por Julio Cortazar")
+    .withRegistrationDate(new DateTime().minusWeeks(3))
     .withAmount(18).build
 
   val bookB: Book = aBook
@@ -29,6 +31,7 @@ object DataFake extends Builder {
     .withIsbn("isbn-234")
     .withEditorial("Editorial-A")
     .withDescription("Libro escrito por Pablo Cohelo")
+    .withRegistrationDate(new DateTime().minusWeeks(1))
     .withAmount(13).build
 
   val bookC: Book = aBook

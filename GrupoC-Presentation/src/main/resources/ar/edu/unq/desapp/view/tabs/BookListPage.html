@@ -13,22 +13,26 @@
                         <th><wicket:message key="row-isbn" /></th>
                         <th><wicket:message key="row-regDate" /></th>
                         <th><wicket:message key="row-amount" /></th>
-                        <th><wicket:message key="row-reservations" /></th>
+                        <th><wicket:message key="row-borrowedAmount" /></th>
                         <th><wicket:message key="row-state" /></th>
                         <th><wicket:message key="row-actions" /></th>
                     </tr><!-- /Table Headers -->
 
                     <tr wicket:id="books">
-                        <td><p wicket:id="title" /></td>
+                        <td>
+                            <span wicket:id="isNew" class="badge badge-info" style="float: left" />
+                            <p wicket:id="title" />
+                        </td>
                         <td><p wicket:id="isbn" /></td>
                         <td><p wicket:id="registrationDate" /></td>
                         <td><p wicket:id="amount" /></td>
-                        <td><p wicket:id="reservations" /></td>
+                        <td><p wicket:id="borrowedAmount" /></td>
                         <td><p wicket:id="state" /></td>
                         <td><!-- Actions -->
                             <button wicket:id="details" class="btn btn-link"><wicket:message key="details" /></button>
                             <button wicket:id="reserve" class="btn btn-link"><wicket:message key="reserve" /></button>
                             <button wicket:id="delete" class="btn btn-link"><wicket:message key="delete" /></button>
+                            <button wicket:id="loan" class="btn btn-link">Loan</button>
                         </td><!-- /Actions -->
                     </tr>
                 </tbody>

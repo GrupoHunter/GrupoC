@@ -1,33 +1,35 @@
 package ar.edu.unq.desapp.view.security
 
 import java.io.Serializable
+
+import ar.edu.unq.desapp.model.bean.User
 import org.apache.wicket.Session
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import org.apache.wicket.injection.Injector
 import org.apache.wicket.request.Request
 import org.apache.wicket.spring.injection.annot.SpringBean
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.AuthenticationException
+import org.springframework.security.authentication.{AuthenticationManager, UsernamePasswordAuthenticationToken}
+import org.springframework.security.core.{Authentication, AuthenticationException}
 import org.springframework.security.core.context.SecurityContextHolder
-import scala.collection.JavaConversions._
+
 import scala.beans.BeanProperty
-import ar.edu.unq.desapp.model.bean.User
+import scala.collection.JavaConversions._
 
 object ScalaBaseProjectSession {
 
+  var mySession: ScalaBaseProjectSession = _
+
   def getSession(): ScalaBaseProjectSession = {
-    Session.get.asInstanceOf[ScalaBaseProjectSession]
+    this.mySession = Session.get.asInstanceOf[ScalaBaseProjectSession]
+    mySession
   }
 
   def getCurrentUser: User = {
-    getSession().userSession
+    mySession.userSession
   }
 }
 
-@SerialVersionUID(1L)
 class ScalaBaseProjectSession(request: Request) extends AuthenticatedWebSession(request) {
 
   @SpringBean(name = "authenticationManager")
@@ -45,10 +47,6 @@ class ScalaBaseProjectSession(request: Request) extends AuthenticatedWebSession(
   def remove(key: String) {
     removeAttribute(key)
   }
-
-  //  def getSession: ScalaBaseProjectSession = {
-  //    Session.get().asInstanceOf[ScalaBaseProjectSession]
-  //  }
 
   private def injectDependencies() {
     Injector.get.inject(this)

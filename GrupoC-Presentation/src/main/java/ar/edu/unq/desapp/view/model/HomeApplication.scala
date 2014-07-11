@@ -9,14 +9,14 @@ import org.apache.wicket.Session
 import org.apache.wicket.authroles.authentication.{AbstractAuthenticatedWebSession, AuthenticatedWebApplication}
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.request.{Request, Response}
-import org.apache.wicket.spring.injection.annot.SpringComponentInjector
+import org.apache.wicket.spring.injection.annot.{SpringBean, SpringComponentInjector}
 import org.springframework.context.{ApplicationContext, ApplicationContextAware}
 
 import scala.beans.BeanProperty
 
 class HomeApplication extends AuthenticatedWebApplication with ApplicationContextAware with Builder{
 
-  @BeanProperty
+  @BeanProperty @SpringBean(name = "services.general")
   var generalService: GeneralService = _
 
   private var isInitialized: Boolean = false

@@ -25,10 +25,11 @@ class User (
   @BeanProperty
   @ElementCollection(fetch = FetchType.EAGER)
   @IndexColumn(name = "id")
-  var rols: java.util.List[String] = _
+  var rols: java.util.List[String] = new java.util.ArrayList[String]
   
   @BeanProperty
-  @OneToMany
+  @OneToMany(fetch = FetchType.EAGER)
+  @IndexColumn(name = "id")
   var borrowedBooks: java.util.List[Book] = _
 
   def this() = this(null, null, null)
