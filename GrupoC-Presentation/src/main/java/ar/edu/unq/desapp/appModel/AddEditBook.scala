@@ -36,10 +36,19 @@ class AddEditBook(var generalService: GeneralService) extends Serializable with 
     book.imageUrl = book_imageUrl
     book.description = book_description
     book.authors = getAuthors
-    generalService.bookService.save(book)
+
+    save(book)
   }
 
-  def getExternalBook(): Book = {
+  private def save(book: Book) {
+//    if(generalService.bookService.alreadyExists(book)) {
+//      book.setAmount(book.amount + 1)
+//      generalService.bookService.update(book)
+//    } else
+      generalService.bookService.save(book)
+  }
+
+  def getExternalBook: Book = {
     generalService.bookService.getExternalBook(book_isbn)
   }
   

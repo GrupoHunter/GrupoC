@@ -10,17 +10,17 @@ import scala.collection.JavaConversions._
 class HibernateGenericDAO[T] extends HibernateDaoSupport with GenericRepository[T] with Serializable {
 
   protected var persistentClass: Class[T] = _
-  
+
   @Autowired
   def anyMethodName(sessionFactory: SessionFactory) {
     this.setSessionFactory(sessionFactory)
   }
-  
+
   override def save(entity: T) {
     this.getHibernateTemplate.save(entity)
     this.getHibernateTemplate.flush()
   }
-  
+
   override def findByExample(entity: T): List[T] = {
     this.getHibernateTemplate.findByExample(entity).asInstanceOf[java.util.List[T]].toList
   }
@@ -31,7 +31,7 @@ class HibernateGenericDAO[T] extends HibernateDaoSupport with GenericRepository[
   }
 
   override def count: Int = {
-    val criteria: Criteria = this.getSession.createCriteria(this.persistentClass)
+    var criteria: Criteria = this.getSession.createCriteria(this.persistentClass)
     criteria.setProjection(Projections.rowCount()).list().get(0).asInstanceOf[java.lang.Long].intValue()
   }
 

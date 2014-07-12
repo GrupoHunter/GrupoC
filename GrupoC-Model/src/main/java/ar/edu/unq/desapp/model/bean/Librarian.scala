@@ -29,7 +29,7 @@ class Librarian(username: String, email: String, password: String)
 //  def configureMaxDaysOfLoan(maxDate: Int) {
 //    librarySystem.configLoan.maxDaysOfLoan = maxDate
 //  }
-
+//
 //  def registerUser(username: String, email: String, password: String, typeUser: String) {
 //    //TODO validate if exist an user with same email
 //    typeUser match {

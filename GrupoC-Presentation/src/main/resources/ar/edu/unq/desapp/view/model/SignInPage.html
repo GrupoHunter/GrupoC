@@ -1,7 +1,6 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-    <div class="container form-signin">
+    <form wicket:id="signinForm" class="container form-signin">
         <h2 class="form-signin-heading"><wicket:message key="welcome" /></h2>
-        <div wicket:id="feedback"></div>
 
         <input wicket:id="username" type="text" class="form-control"
                 placeholder="Username" required autofocus />
@@ -10,7 +9,9 @@
         <input wicket:id="password" type="password" class="form-control"
                 placeholder="Password" required />
 
+        <div wicket:id="feedback" />
+
         <button wicket:id="signin" class="btn btn-lg btn-primary btn-block"
                 type="submit"><wicket:message key="btn-signin" /></button>
-    </div>
+    </form>
 </wicket:extend>

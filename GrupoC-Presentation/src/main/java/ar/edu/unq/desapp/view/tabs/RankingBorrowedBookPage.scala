@@ -2,36 +2,27 @@ package ar.edu.unq.desapp.view.tabs
 
 import ar.edu.unq.desapp.appModel.RankingBorrowedBookAppModel
 import ar.edu.unq.desapp.model.bean.Book
-import ar.edu.unq.desapp.services.GeneralService
 import ar.edu.unq.desapp.view.model.BasePage
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.markup.html.form.StatelessForm
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.spring.injection.annot.SpringBean
-
-import scala.beans.BeanProperty
 
 class RankingBorrowedBookPage extends BasePage {
-
-  @BeanProperty @SpringBean(name = "services.general")
-  var generalService: GeneralService = _
 
   override def onInitialize() {
     super.onInitialize()
     val bookListAppModel = new RankingBorrowedBookAppModel(this.generalService.bookService)
-    val form = new Form[RankingBorrowedBookAppModel]("bookListForm",
+    val form = new StatelessForm[RankingBorrowedBookAppModel]("bookListForm",
       new CompoundPropertyModel[RankingBorrowedBookAppModel](bookListAppModel)
     )
 
-//// TODO - Uncomment this when mostBorrowed on BookService is implemented
-//    createTableRanking(form)
-///  /TODO
-
+    createTableRanking(form)
+//    addActions(form)
     add(form)
   }
 
-  private def createTableRanking(form: Form[RankingBorrowedBookAppModel]) {
+  private def createTableRanking(form: StatelessForm[RankingBorrowedBookAppModel]) {
     val books =
       new ListView[Book]("books", form.getModelObject.mostBorrowed) {
         override def populateItem(book: ListItem[Book]) =
@@ -44,5 +35,4 @@ class RankingBorrowedBookPage extends BasePage {
     // Add table
     form.add(books)
   }
-  
 }

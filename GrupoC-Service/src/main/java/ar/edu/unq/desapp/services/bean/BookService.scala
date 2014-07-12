@@ -1,9 +1,9 @@
 package ar.edu.unq.desapp.services.bean
 
 import ar.edu.unq.desapp.services.GenericService
-import ar.edu.unq.desapp.model.bean.{Author, Book}
+import ar.edu.unq.desapp.model.bean.{LoanBook, Author, Book}
 import javax.annotation.Resource
-import ar.edu.unq.desapp.repository.bean.BookRepository
+import ar.edu.unq.desapp.repository.bean.{LoanBookRepository, BookRepository}
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.DefaultHttpClient
@@ -16,9 +16,32 @@ class BookService extends GenericService[Book] {
 
   @BeanProperty @Resource
   var bookRepository: BookRepository = _
-  
+
+  @BeanProperty @Resource
+  var loanBookRepository: LoanBookRepository = _
+
   def retriveAllMostBorrowed: java.util.List[Book] = {
-	bookRepository.findTheTwentyMostBorrowedBook
+    val loanBooks: java.util.List[LoanBook] = loanBookRepository.findAll
+    var allMostBorrowedBooks: Map[Book, Int] = Map()
+    for(loan <- loanBooks) { //I know, it's horrible - TODO Refactor
+      if(allMostBorrowedBooks.contains(loan.book)) {
+        allMostBorrowedBooks.updated(loan.book, allMostBorrowedBooks.get(loan.book))
+      }
+      else {
+        allMostBorrowedBooks += (loan.book -> 1)
+      }
+    }
+    allMostBorrowedBooks.keySet.toList
+  }
+
+  def alreadyExists(aBook: Book): Boolean = { //I know, it's horrible - TODO Refactor
+    val books: java.util.List[Book] = bookRepository.findAll
+    var result: Boolean = false
+
+    for( book <- books ) {
+      if(book.isbn == aBook.isbn) result = true
+    }
+    result
   }
 
 ////////////////// Google Books Api Service
@@ -28,7 +51,7 @@ class BookService extends GenericService[Book] {
   object L extends CC[List[Any]]
   object S extends CC[String]
 
-  def getExternalBook(isbn: String = "9589760457") = {
+  def getExternalBook(isbn: String) = {
     getBook(isbn).head
   }
 

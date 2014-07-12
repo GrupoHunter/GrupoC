@@ -11,31 +11,31 @@ class UserLogin(var user: User) extends UserDetails {
   override def getAuthorities: java.util.Collection[GrantedAuthority] = {
     Collections2.transform(this.user.rols, new Function[String, GrantedAuthority]() {
       override def apply(role: String): GrantedAuthority = {
-        new GrantedAuthorityImpl(role) 
+        new GrantedAuthorityImpl(role)
       }
     })
   }
-  
+
   override def isAccountNonExpired: Boolean = {
     true
   }
-  
+
   override def isAccountNonLocked: Boolean = {
     true
   }
-  
+
   override def isCredentialsNonExpired: Boolean = {
     true
   }
-  
+
   override def isEnabled: Boolean = {
     true
   }
-  
+
   override def getPassword: String = {
     this.user.password
   }
-  
+
   override def getUsername: String = {
     this.user.username
   }

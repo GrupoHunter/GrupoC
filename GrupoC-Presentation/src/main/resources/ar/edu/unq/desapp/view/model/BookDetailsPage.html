@@ -15,15 +15,14 @@
                 <td><wicket:message key="editorial" /></td><td wicket:id="book.editorial" />
             </tr>
         </table>
-
-        <!-- TODO - Add comments of the book and similar books recommended -->
-<!--        <table class="table">
+        <br><br>
+        <table class="table table-striped table-bordered">
             <tbody>
-            <tr class="thead">&lt;!&ndash; Table Headers &ndash;&gt;
-                <th><wicket:message key="row-comment">Comment</wicket:message></th>
-                <th><wicket:message key="row-author">Author</wicket:message></th>
-                <th><wicket:message key="row-date">Date</wicket:message></th>
-            </tr>&lt;!&ndash; /Table Headers &ndash;&gt;
+            <tr class="thead"><!-- Table Headers -->
+                <th><wicket:message key="row-comment" /></th>
+                <th><wicket:message key="row-author" /></th>
+                <th><wicket:message key="row-date" /></th>
+            </tr><!-- /Table Headers -->
 
             <tr wicket:id="comments">
                 <td><p wicket:id="comment" /></td>
@@ -32,8 +31,8 @@
             </tr>
             </tbody>
         </table>
-        &lt;!&ndash; Pagination nav &ndash;&gt;
-        <ul wicket:id="navigator" />-->
+        <!-- Pagination nav -->
+        <ul wicket:id="navigator" />
 
         <div>
             <textarea rows="3" wicket:id="book_comment"

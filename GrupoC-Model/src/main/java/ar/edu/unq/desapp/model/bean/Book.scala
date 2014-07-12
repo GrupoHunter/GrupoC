@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.model.bean
 import java.util
 import javax.persistence._
 
+import org.hibernate.annotations.IndexColumn
 import org.joda.time.DateTime
 
 import scala.beans.BeanProperty
@@ -31,11 +32,17 @@ class Book (
   @Column(name = "id_book")
   var id: Int = _
 
-  @OneToMany(cascade = Array{CascadeType.ALL}) @BeanProperty
+  @BeanProperty
+  @OneToMany(cascade = Array{CascadeType.ALL}, fetch = FetchType.EAGER)
+  @IndexColumn(name = "id_book")
   var comment: java.util.List[Comment] = new util.ArrayList[Comment]
 
-  @OneToMany(cascade = Array{CascadeType.ALL}, fetch = FetchType.EAGER) @BeanProperty
+  @BeanProperty
+  @OneToMany(cascade = Array{CascadeType.ALL}, fetch = FetchType.EAGER)
+  @IndexColumn(name = "id_book")
   var authors: java.util.List[Author] = new util.ArrayList[Author]
+
+  var borrowedAmount: Int = 0
 
   def this() = this(null, null, null, null, null)
   
@@ -44,4 +51,10 @@ class Book (
     aComment.user = anUser
     this.comment = aComment :: this.comment.asScala.toList
   }
+
+  def isNew: Boolean = {
+    registrationDate.toDate.after(new DateTime().withTimeAtStartOfDay().toDate)
+  }
+
+  def isAvailable: Boolean = amount > borrowedAmount
 }

@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.model.bean
 
-import javax.persistence.{Entity, GeneratedValue, Id, OneToOne, Table}
+import javax.persistence._
 
 import org.joda.time.{DateTime, Days}
 
@@ -17,7 +17,7 @@ class LoanBook(
   @Id @GeneratedValue
   var id: Int = _
 
-  @OneToOne @BeanProperty
+  @OneToOne(cascade = Array{CascadeType.ALL}) @BeanProperty
   var book: Book = _
   
   @OneToOne @BeanProperty

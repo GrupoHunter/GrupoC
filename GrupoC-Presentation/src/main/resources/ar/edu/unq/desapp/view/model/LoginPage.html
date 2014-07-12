@@ -1,18 +1,20 @@
 <wicket:extend xmlns:wicket="http://wicket.apache.org">
-	<div class="container">
-		<form wicket:id="loginform" class="form-signin">
-			<h2 class="form-signin-heading"><wicket:message key="welcome" /></h2>
-			<div wicket:id="feedback" />
-			<input wicket:id="username" class="form-control" type="text"
-				placeholder="Username" required autofocus />
-            <input wicket:id="password" class="form-control" type="password"
-				placeholder="Password" required />
-			<!-- <label class="checkbox"> <input type="checkbox" value="remember-me"> Remember me </label> -->
-			<button class="btn btn-lg btn-primary btn-block" type="submit"><wicket:message key="btn-submit" /></button>
+    <div class="container">
+    <form wicket:id="loginform" class="form-signin">
+        <h2 class="form-signin-heading"><wicket:message key="welcome" /></h2>
 
-            <br><span class="help-block"><wicket:message key="help" /></span>
-            <a class="btn btn-link" wicket:id="register">
-                <wicket:message key="btn-register" /></a>
-		</form>
-	</div>
+        <input wicket:id="username" class="form-control" type="text"
+            placeholder="Username" required autofocus />
+        <input wicket:id="password" class="form-control" type="password"
+            placeholder="Password" required />
+
+        <div wicket:id="feedback" />
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit"><wicket:message key="btn-submit" /></button>
+
+        <br><span class="help-block"><wicket:message key="help" /></span>
+        <a class="btn btn-link" wicket:id="register">
+            <wicket:message key="btn-register" /></a>
+    </form>
+    </div>
 </wicket:extend>

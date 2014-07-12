@@ -16,15 +16,19 @@
 	<div class="container">
 		<br>
         <!-- Searchbox -->
-        <form class="form-search" style="float: right">
-            <input type="text" class="span2 search-query" />
-            <button type="submit" class="btn btn-default"><wicket:message key="btn-search" /></button>
+        <div style="float: right">
+        <form class="form-search" style="float: left">
+            <input wicket:id="search" type="text" class="span2 search-query form-control" />
+        </form>
+        <form style="float: right">
+            <button wicket:id="btn-search" type="submit" class="btn btn-default"><wicket:message key="btn-search" /></button>
             <button wicket:id="profile" class="btn btn-default"><wicket:message key="btn-profile" /></button>
-            <button class="btn btn-default">
-                <!--<a href="j_spring_security_logout"><wicket:message key="logout" /></a>-->
-                <wicket:message key="btn-logout" />
+            <button wicket:id="logout" class="btn btn-default">
+                <a href="j_spring_security_logout"><wicket:message key="btn-logout" /></a>
+                <!--<wicket:message key="btn-logout" />-->
             </button>
         </form>
+        </div>
 		<ul class="nav nav-tabs">
 			<!-- Navigation -->
 			<li><a wicket:id="BookList">

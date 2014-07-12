@@ -1,36 +1,36 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-	
-	<!-- ________________________________________ -->
-	<!-- ________________________________________ -->
-	<!-- ___________ Beans ______________________ -->
-	<!-- ________________________________________ -->
-	<!-- ________________________________________ -->
 
-	<bean id="authorRepository" class="ar.edu.unq.desapp.repository.bean.AuthorRepository" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="bookRepository" class="ar.edu.unq.desapp.repository.bean.BookRepository" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="userRepository" class="ar.edu.unq.desapp.repository.bean.UserRepository" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="librarianRepository" class="ar.edu.unq.desapp.repository.bean.LibrarianRepository" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="loanBookRepository" class="ar.edu.unq.desapp.repository.bean.LoanBookRepository" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean id="hibernateGeneric" class="ar.edu.unq.desapp.repository.generic.HibernateGenericDAO" >
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
+    <!-- ________________________________________ -->
+    <!-- ________________________________________ -->
+    <!-- ___________ Beans ______________________ -->
+    <!-- ________________________________________ -->
+    <!-- ________________________________________ -->
+
+    <bean id="authorRepository" class="ar.edu.unq.desapp.repository.bean.AuthorRepository" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="bookRepository" class="ar.edu.unq.desapp.repository.bean.BookRepository" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="userRepository" class="ar.edu.unq.desapp.repository.bean.UserRepository" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="librarianRepository" class="ar.edu.unq.desapp.repository.bean.LibrarianRepository" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="loanBookRepository" class="ar.edu.unq.desapp.repository.bean.LoanBookRepository" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <bean id="hibernateGeneric" class="ar.edu.unq.desapp.repository.generic.HibernateGenericDAO" >
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
 </beans>

@@ -2,33 +2,45 @@ package ar.edu.unq.desapp.view.model
 
 import org.apache.wicket.markup.html.form._
 import org.apache.wicket.markup.html.panel.FeedbackPanel
+import scala.beans.BeanProperty
+import org.apache.wicket.spring.injection.annot.SpringBean
+import ar.edu.unq.desapp.services.bean.UserService
+import ar.edu.unq.desapp.model.bean.User
+import org.apache.wicket.model.CompoundPropertyModel
 
 class SignInPage extends HeadBlankPage {
 
-//  private val signinAppModel = new SignIn
+  @BeanProperty @SpringBean(name = "services.user")
+  var userService: UserService = _
+
+  private val user: User = new User()
 
   override def onInitialize() {
     super.onInitialize()
-
-//    val signinForm = new Form[SignIn]("signinForm", new CompoundPropertyModel(this.signinAppModel))
-
-    addFields()
-    addActions()
-    add()
+    user.addRole("ROLE_USER")
+    val form = new StatelessForm[User]("signinForm", new CompoundPropertyModel(this.user))
+    addFields(form)
+    addActions(form)
+    add(form)
   }
 
-  private def addFields(){
-    add(new FeedbackPanel("feedback"))
-    add(new RequiredTextField("username"))
-    add(new PasswordTextField("password"))
-    add(new EmailTextField("email"))
+  private def addFields(form: StatelessForm[User]) {
+    form.add(new RequiredTextField("username"))
+    form.add(new PasswordTextField("password"))
+    form.add(new EmailTextField("email"))
+    form.add(new FeedbackPanel("feedback"))
   }
 
-  private def addActions(){
-    add(new Button("signin") { def onClick() { signIn() }})
+  private def addActions(form: StatelessForm[User]) {
+    form.add(new Button("signin") {
+      override def onSubmit() {
+        signIn(form.getModelObject)
+        SignInPage.this.setResponsePage(classOf[LoginPage])
+      }
+    })
   }
 
-  private def signIn() {
-    //TODO
+  private def signIn(user: User) {
+    userService.save(user)
   }
 }
